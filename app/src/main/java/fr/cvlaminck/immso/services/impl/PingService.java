@@ -321,7 +321,7 @@ public class PingService
     }
 
     private void buildNotificationForOneOfflineServer(NotificationCompat.Builder builder, MinecraftServerEntity offlineServer) {
-        final long offlineTime = offlineServer.getOfflineSince() - offlineServer.getLastUpdateTime();
+        final long offlineTime = offlineServer.getLastUpdateTime() - offlineServer.getOfflineSince();
         builder
                 .setSmallIcon(R.drawable.ic_launcher) //TODO : replace with the real icon of the application
                 .setContentTitle(offlineServer.getName())
@@ -331,7 +331,7 @@ public class PingService
 
     private void buildNotificationForMultipleOfflineServers(NotificationCompat.Builder builder, List<MinecraftServerEntity> offlineServers) {
         final MinecraftServerEntity offlineServer = offlineServers.get(0);
-        final long offlineTime = offlineServer.getOfflineSince() - offlineServer.getLastUpdateTime();
+        final long offlineTime = offlineServer.getLastUpdateTime() - offlineServer.getOfflineSince();
         builder
                 .setSmallIcon(R.drawable.ic_launcher) //TODO : replace with the real icon of the application
                 .setContentTitle(getString(R.string.offlineServerNotification_multipleServers_contentTitle, offlineServers.size()))

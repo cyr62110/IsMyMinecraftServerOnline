@@ -164,8 +164,8 @@ public class MinecraftServerEntity
             if(notifyObservers)
                 notifyObservers();
         }
-        //Do not forget to update the offline since when the status changed
-        if(status != MinecraftServer.Status.OFFLINE) {
+        //We reset the offlineSince only if the status changed to ONLINE
+        if(status == MinecraftServer.Status.ONLINE) {
             offlineSince = 0;
         }
     }
@@ -179,8 +179,9 @@ public class MinecraftServerEntity
     }
 
     public void setOfflineSince(long offlineSince) {
+        //The offlineSince value can be set only if the server is actually offline
         if(status != MinecraftServer.Status.OFFLINE)
-            offlineSince = 0;
+            return;
         this.offlineSince = offlineSince;
     }
 
