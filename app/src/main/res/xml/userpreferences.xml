@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/userpreferences_refreshCategory_title">
+
+        <CheckBoxPreference
+            android:key="@string/userpreferences_refreshAutomaticallyInBackground_key"
+            android:title="@string/userpreferences_refreshAutomaticallyInBackground_title"
+            android:defaultValue="true"
+            />
+
+        <ListPreference
+            android:key="@string/userpreferences_timeInMSBetweenChecks_key"
+            android:title="@string/userpreferences_timeInMSBeetweenChecks_title"
+            android:entries="@array/userpreferences_timeInMSBeetweenChecks_entries"
+            android:entryValues="@array/userpreferences_timeInMSBeetweenChecks_entryValues"
+            android:defaultValue="900000"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/userpreferences_notificationsCategory_title">
+
+        <CheckBoxPreference
+            android:key="@string/userpreferences_notifyWhenServerGoesOffline_key"
+            android:title="@string/userpreferences_notifyWhenServerGoesOffline_title"
+            android:defaultValue="true"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/miAdd"
+        android:title="Add"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="always" />
+
+    <item
+        android:id="@+id/miRefresh"
+        android:title="Refresh"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="always" />
+
+    <item
+        android:id="@+id/miPreferences"
+        android:title="@string/homeactivity_miPreferences"
+        android:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/miAbout"
+        android:title="About"
+        android:showAsAction="never"
+        />
+</menu>

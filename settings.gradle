@@ -1,0 +1,1 @@
+include ':app', ':minecraft1.7+SupportLibrary', ':baseMinecraftVersionSupportLibrary'

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Is My Minecraft Server Online</string>
+
+    <string name="homeactivity_miPreferences">Preferences</string>
+
+    <string name="addserveractivity_label">Add a server</string>
+    <string name="done">Done</string>
+    <string name="discard">Discard</string>
+    <string name="addserveractivity_txtName_error">You must enter a name. Must not be empty or contains only spaces.</string>
+    <string name="addserveractivity_txtHost_errorEmpty">You must enter an host. Must not be empty or contains only spaces.</string>
+    <string name="addserveractivity_txtPort_error">Port must be a decimal number between 1 and 65535.</string>
+
+
+    <string name="userpreferenceactivity_label">Preferences</string>
+    <string name="userpreferences_refreshCategory_title">Refresh</string>
+    <string name="userpreferences_notificationsCategory_title">Notifications</string>
+    <string name="userpreferences_timeInMSBetweenChecks_key">period</string>
+    <string name="userpreferences_timeInMSBeetweenChecks_title">Time between refresh</string>
+    <string name="userpreferences_refreshAutomaticallyInBackground_key">auto</string>
+    <string name="userpreferences_refreshAutomaticallyInBackground_title">Automatic refresh</string>
+    <string name="userpreferences_notifyWhenServerGoesOffline_key">notify</string>
+    <string name="userpreferences_notifyWhenServerGoesOffline_title">Notify when a server goes offline</string>
+
+    <string name="timeformatter_seconds">seconds</string>
+    <string name="timeformatter_minutes">minutes</string>
+    <string name="timeformatter_hours">hours</string>
+    <string name="timeformatter_days">days</string>
+
+    <string name="offlineServerNotification_oneServer_contentText">Your server is offline since %s</string>
+    <string name="offlineServerNotification_multipleServers_contentTitle">%d servers offline</string>
+    <string name="offlineServerNotification_multipleServers_contentText">\'%1$s\', and %2$d more are offline since at least %3$s</string>
+
+</resources>
