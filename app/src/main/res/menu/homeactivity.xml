@@ -11,7 +11,7 @@
         android:id="@+id/miRefresh"
         android:title="Refresh"
         android:icon="@drawable/ic_launcher"
-        android:showAsAction="always" />
+        android:showAsAction="never" />
 
     <item
         android:id="@+id/miPreferences"

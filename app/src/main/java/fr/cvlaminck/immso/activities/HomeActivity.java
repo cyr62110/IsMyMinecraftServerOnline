@@ -51,14 +51,22 @@ public class HomeActivity
         pingService.unregisterServerStatusChangedListener(this);
     }
 
+    /**
+     * Refresh the status of all server in the list
+     */
+    private void refreshServerStatus() {
+        pingService.refreshServerStatus();
+    }
+
     @OptionsItem(R.id.miAdd)
     protected void addServerToList() {
         AddServerActivity_.intent(this).start();
     }
 
     @OptionsItem(R.id.miRefresh)
-    protected void refreshServerStatus() {
-        pingService.refreshServerStatus();
+    protected void miRefresh() {
+        srlRefresh.setRefreshing(true);
+        refreshServerStatus();
     }
 
     @OptionsItem(R.id.miPreferences)
@@ -75,13 +83,14 @@ public class HomeActivity
 
     @Override
     public void onAllServerStatusUpdated(List<MinecraftServerEntity> servers) {
-
+        //We notify the UI that the refresh is finished
+        srlRefresh.setRefreshing(false);
     }
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-
+            refreshServerStatus();
         }
     };
 }
