@@ -13,11 +13,18 @@ public interface PingService {
 
     /**
      * Add a new server in the list of observed servers.
-     * This will trigger an automatic refresh operation.
+     * This does NOT trigger an automatic refresh operation.
      *
      * @param minecraftServer Server to observe
      */
     void addServer(MinecraftServerEntity minecraftServer);
+
+    /**
+     * Remove a server from the list of observed servers.
+     *
+     * @param minecraftServer Server the user do not want to observe anymore
+     */
+    void removeServer(MinecraftServerEntity minecraftServer);
 
     /**
      * Refresh the status of all observed servers.

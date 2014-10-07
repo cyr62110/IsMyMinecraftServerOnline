@@ -28,6 +28,11 @@ public class PingServiceBinder
     }
 
     @Override
+    public void removeServer(MinecraftServerEntity minecraftServer) {
+        service.removeServer(minecraftServer);
+    }
+
+    @Override
     public void refreshServerStatus() {
         service.refreshServerStatus();
     }

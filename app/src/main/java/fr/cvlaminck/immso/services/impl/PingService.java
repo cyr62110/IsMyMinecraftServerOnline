@@ -350,8 +350,28 @@ public class PingService
         runtimeMinecraftServerDao.create(server);
         //Then, we add this server to the list
         servers.add(server);
-        //And we notify the view that the data set has changed
-        serverStatusChangedListener.onServerListChanged(servers);
+        //And we notify our listener that the data set has changed
+        if(serverStatusChangedListener != null)
+            serverStatusChangedListener.onServerListChanged(servers);
+    }
+
+    /*package*/ void removeServer(MinecraftServerEntity server) {
+        if(DEBUG)
+            Log.d(TAG, String.format("Removing server '%s' from the list", server.getName()));
+        //We check if the server has an ID, if not well there is nothing to remove because
+        //it is not in ths list
+        if(server.getId() == 0) {
+            if(DEBUG)
+                Log.d(TAG, String.format("Server '%s' has no id. Skipping remove from DB operation", server.getName()));
+        } else {
+            //We remove the server from the database if it has an id
+            runtimeMinecraftServerDao.delete(server);
+        }
+        //Then we remove it from the list
+        servers.remove(server);
+        //Finally we notify our listener that the data set has changed
+        if(serverStatusChangedListener != null)
+            serverStatusChangedListener.onServerListChanged(servers);
     }
 
     /*package*/ void registerServerStatusChangedListener(fr.cvlaminck.immso.services.api.PingService.ServerStatusChangedListener listener) {

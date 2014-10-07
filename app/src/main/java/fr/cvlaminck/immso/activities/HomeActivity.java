@@ -16,6 +16,7 @@ import fr.cvlaminck.immso.adapters.ServerAdapter;
 import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
 import fr.cvlaminck.immso.preferences.UserPreferences_;
 import fr.cvlaminck.immso.services.api.PingService;
+import fr.cvlaminck.immso.views.swipedismiss.SwipeDismissListViewTouchListener;
 
 @EActivity(R.layout.homeactivity)
 @OptionsMenu(R.menu.homeactivity)
@@ -29,11 +30,13 @@ public class HomeActivity
     @ViewById
     protected SwipeRefreshLayout srlRefresh;
 
-    private ServerAdapter adapter = null;
-
     @AfterViews
     protected void afterViews() {
         srlRefresh.setOnRefreshListener(onRefreshListener);
+        //We configure the swipe to dismiss using Roman Nurik's code
+        final SwipeDismissListViewTouchListener touchListener = new SwipeDismissListViewTouchListener(lvServers, dismissCallbacks);
+        lvServers.setOnTouchListener(touchListener);
+        lvServers.setOnScrollListener(touchListener.makeScrollListener());
     }
 
     @Override
@@ -42,7 +45,7 @@ public class HomeActivity
         //When we have retrieved a reference to the service, we ask for the
         //list of servers and we display them in the ListView
         final List<MinecraftServerEntity> servers = pingService.getServers();
-        adapter = new ServerAdapter(this, servers);
+        final ServerAdapter adapter = new ServerAdapter(this, servers);
         lvServers.setAdapter(adapter);
     }
 
@@ -77,8 +80,8 @@ public class HomeActivity
 
     @Override
     public void onServerListChanged(List<MinecraftServerEntity> servers) {
-        if(adapter != null)
-            adapter.notifyDataSetChanged();
+        if(lvServers != null && lvServers.getAdapter() != null)
+            ((ServerAdapter)lvServers.getAdapter()).notifyDataSetChanged();
     }
 
     @Override
@@ -91,6 +94,21 @@ public class HomeActivity
         @Override
         public void onRefresh() {
             refreshServerStatus();
+        }
+    };
+
+    private SwipeDismissListViewTouchListener.DismissCallbacks dismissCallbacks = new SwipeDismissListViewTouchListener.DismissCallbacks() {
+        @Override
+        public boolean canDismiss(int position) {
+            return true;
+        }
+
+        @Override
+        public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+            for(int position : reverseSortedPositions) {
+                final MinecraftServerEntity server = (MinecraftServerEntity) listView.getAdapter().getItem(position);
+                pingService.removeServer(server);
+            }
         }
     };
 }
