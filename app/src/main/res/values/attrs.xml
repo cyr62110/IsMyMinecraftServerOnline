@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="StatusView">
+        <attr name="onlineStatusColor" format="color" />
+        <attr name="fullStatusColor" format="color" />
+        <attr name="offlineStatusColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="NumberOfPlayersView">
+        <attr name="numberOfPlayers" format="integer" />
+        <attr name="maxNumberOfPlayers" format="integer" />
+        <attr name="numberOfPlayersTextSize" format="dimension" />
+        <attr name="numberOfPlayersTextColor" format="color" />
+        <attr name="numberOfPlayersTextStyle" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+        </attr>
+        <attr name="numberOfPlayersTypeface" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="sans" value="1" />
+            <enum name="serif" value="2" />
+            <enum name="monospace" value="3" />
+        </attr>
+        <attr name="numberOfPlayersFontFamily" format="string" />
+        <attr name="maxNumberOfPlayersTextSize" format="dimension" />
+        <attr name="maxNumberOfPlayersTextColor" format="color" />
+        <attr name="maxNumberOfPlayersTextStyle" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+        </attr>
+        <attr name="maxNumberOfPlayersTypeface" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="sans" value="1" />
+            <enum name="serif" value="2" />
+            <enum name="monospace" value="3" />
+        </attr>
+        <attr name="maxNumberOfPlayersFontFamily" format="string" />
+        <attr name="separatorWidth" format="dimension" />
+        <attr name="separatorLength" format="dimension" />
+        <attr name="separatorSpacing" format="dimension" />
+        <attr name="separatorColor" format="color" />
+    </declare-styleable>
+
+</resources>

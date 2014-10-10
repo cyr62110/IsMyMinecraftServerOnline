@@ -30,23 +30,23 @@ public abstract class PingSender {
         Socket socket = null;
         mcServer.setLastUpdateTime(new Date().getTime());
         //We change the status to PINGING
-        mcServer.setStatus(MinecraftServer.Status.PINGING);
+        mcServer.setDetailedStatus(MinecraftServer.DetailedStatus.PINGING);
         try {
             //First, we create the socket and connect to the server
             socket = new Socket(mcServer.getHost(), mcServer.getPort());
             //We retrieve all the information about the server using the internalPing method
             internalPing(socket, mcServer);
             //Finally we update the status
-            if(mcServer.getNumberOfPlayer() == mcServer.getMaxNumberOfPlayer())
-                mcServer.setStatus(MinecraftServer.Status.FULL);
+            if(mcServer.getNumberOfPlayer() >= mcServer.getMaxNumberOfPlayer())
+                mcServer.setDetailedStatus(MinecraftServer.DetailedStatus.FULL);
             else
-                mcServer.setStatus(MinecraftServer.Status.ONLINE);
+                mcServer.setDetailedStatus(MinecraftServer.DetailedStatus.ONLINE);
         } catch (InternalErrorPingException ex) {
-            mcServer.setStatus(MinecraftServer.Status.INTERNAL_ERROR);
+            mcServer.setDetailedStatus(MinecraftServer.DetailedStatus.INTERNAL_ERROR);
             if(DEBUG)
                 ex.printStackTrace();
         } catch (Exception ex) {
-            mcServer.setStatus(MinecraftServer.Status.OFFLINE);
+            mcServer.setDetailedStatus(MinecraftServer.DetailedStatus.OFFLINE);
             //TODO : handle errors like DNS error
             //TODO : handle server starting issue using the disconnection packet
             if(DEBUG)

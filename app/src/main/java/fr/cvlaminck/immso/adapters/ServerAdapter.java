@@ -5,12 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.Collection;
 import java.util.List;
 
 import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
-import fr.cvlaminck.immso.views.ServerView;
-import fr.cvlaminck.immso.views.ServerView_;
+import fr.cvlaminck.immso.views.server.ServerListItemView;
+import fr.cvlaminck.immso.views.server.ServerListItemView_;
 
 /**
  */
@@ -44,10 +43,10 @@ public class ServerAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup root) {
         if(convertView == null) {
-            convertView = ServerView_.build(context);
+            convertView = ServerListItemView_.build(context);
         }
 
-        final ServerView serverView = (ServerView) convertView;
+        final ServerListItemView serverView = (ServerListItemView) convertView;
         final MinecraftServerEntity server = (MinecraftServerEntity) getItem(position);
         serverView.setServer(server);
 

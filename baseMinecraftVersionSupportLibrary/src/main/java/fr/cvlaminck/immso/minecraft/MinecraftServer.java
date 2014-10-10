@@ -1,7 +1,5 @@
 package fr.cvlaminck.immso.minecraft;
 
-import java.net.URL;
-
 /**
  *
  */
@@ -57,7 +55,7 @@ public class MinecraftServer {
     /**
      * Status of the server
      */
-    private Status status = Status.UNKNOWN;
+    private DetailedStatus detailedStatus = DetailedStatus.UNKNOWN;
 
     /**
      * When the status has been updated
@@ -120,12 +118,12 @@ public class MinecraftServer {
         this.maxNumberOfPlayer = maxNumberOfPlayer;
     }
 
-    public Status getStatus() {
-        return status;
+    public DetailedStatus getDetailedStatus() {
+        return detailedStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setDetailedStatus(DetailedStatus detailedStatus) {
+        this.detailedStatus = detailedStatus;
     }
 
     public int getProtocolVersion() {
@@ -153,36 +151,67 @@ public class MinecraftServer {
     }
 
     /**
-     * Enumeration of status for the server.
+     * Status of the server
      */
     public enum Status {
         /**
-         * We do not know the status of the server since we have never pinged it.
+         * We do not known the status of this server. For ex. if the library is actually pinging the server
+         * or the server has never been pinged, etc.
          */
         UNKNOWN,
         /**
+         * The server is not accessible and players cannot connect to it.
+         */
+        OFFLINE,
+        /**
+         * The server is accessible. Players may be able to connect
+         * to it if not full.
+         */
+        ONLINE
+    }
+
+    /**
+     * Enumeration of status for the server. This enumeration provide more detail on why we
+     * have given the status to the server.
+     */
+    public enum DetailedStatus {
+        /**
+         * We do not know the status of the server since we have never pinged it.
+         */
+        UNKNOWN(Status.UNKNOWN),
+        /**
          * The library is actually actualizing server status.
          */
-        PINGING,
+        PINGING(Status.UNKNOWN),
         /**
          * The latest ping failed due to an internal error in the PingSender implementation.
          * This may be caused by protocol changes after an update of the server.
          */
-        INTERNAL_ERROR,
+        INTERNAL_ERROR(Status.UNKNOWN),
         /**
          * The server is not accessible or available. You cannot connect to
          * this server using your minecraft client.
          */
-        OFFLINE,
+        OFFLINE(Status.OFFLINE),
         /**
          * The server is available.
          */
-        ONLINE,
+        ONLINE(Status.ONLINE),
         /**
          * The server is online but no more people can cannot connect
          * to its since it is full.
          */
-        FULL
+        FULL(Status.ONLINE);
+
+        private Status status;
+
+        private DetailedStatus(Status status) {
+            this.status = status;
+        }
+
+        public Status equivalentStatus() {
+            return status;
+        }
     }
 
 }

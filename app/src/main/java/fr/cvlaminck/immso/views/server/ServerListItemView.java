@@ -1,6 +1,7 @@
-package fr.cvlaminck.immso.views;
+package fr.cvlaminck.immso.views.server;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,8 +16,8 @@ import fr.cvlaminck.immso.R;
 import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
 import fr.cvlaminck.immso.minecraft.MinecraftServer;
 
-@EViewGroup(R.layout.serverview)
-public class ServerView
+@EViewGroup(R.layout.serverlistitemview)
+public class ServerListItemView
     extends LinearLayout
     implements Observer {
 
@@ -30,11 +31,14 @@ public class ServerView
     protected TextView txtAddress;
 
     @ViewById
-    protected TextView txtStatus;
+    protected StatusView cvStatus;
+
+    @ViewById
+    protected NumberOfPlayersView cvNumberOfPlayers;
 
     private MinecraftServerEntity server;
 
-    public ServerView(Context context) {
+    public ServerListItemView(Context context) {
         super(context);
     }
 
@@ -60,12 +64,12 @@ public class ServerView
         setName(server.getName());
         setAddress(server.getHost(), server.getPort());
         //If we have a status, we display more information on the server
-        setStatus(server.getStatus(), animated);
-        if(server.getStatus() != MinecraftServer.Status.UNKNOWN) {
+        setStatus(server.getDetailedStatus(), animated);
+        if(server.getDetailedStatus() != MinecraftServer.DetailedStatus.UNKNOWN) {
             setVersion(server.getVersion());
-            //If the server is online, then we display the number of player
-            if(server.getStatus() == MinecraftServer.Status.ONLINE)
-                setNumberOfPlayer(server.getNumberOfPlayer(), server.getMaxNumberOfPlayer(), animated);
+            //If the server is online, we update the view displaying the number of players.
+            if(server.getDetailedStatus() == MinecraftServer.DetailedStatus.ONLINE)
+                setNumberOfPlayer(server.getNumberOfPlayer(), server.getMaxNumberOfPlayer());
         }
     }
 
@@ -79,17 +83,38 @@ public class ServerView
     }
 
     private void setVersion(String version) {
+        //TODO Display unknown if no information about the server
+        //TODO Do not add Minecraft if version is not starting with a number. ex. Epicube
         final String sVersion = String.format("Minecraft %s", version);
         txtVersion.setText(sVersion);
     }
 
-    private void setStatus(MinecraftServer.Status status, boolean animated) {
+    private void setStatus(MinecraftServer.DetailedStatus detailedStatus, boolean animated) {
         //TODO add animation and cool stuff here
-        txtStatus.setText(status.name());
+        cvStatus.setDetailedStatus(detailedStatus);
+        //We hide the number of players if the server is not online
+        switch (detailedStatus.equivalentStatus()) {
+            case UNKNOWN:
+                //We are probably pinging the server, so we display the progress view
+                cvNumberOfPlayers.setVisibility(View.GONE);
+                //TODO : display the progress view
+                break;
+            case OFFLINE:
+                //The server is offline, we hide everything.
+                //TODO : maybe show an offline since view
+                cvNumberOfPlayers.setVisibility(View.GONE);
+                break;
+            case ONLINE:
+                //The server is online, we display the number of players view
+                //TODO : hide other view when implemented
+                cvNumberOfPlayers.setVisibility(VISIBLE);
+                break;
+        }
     }
 
-    private void setNumberOfPlayer(int numberOfPlayer, int maxNumberOfPlayer, boolean animated) {
-        //TODO not supported for now
+    private void setNumberOfPlayer(int numberOfPlayer, int maxNumberOfPlayer) {
+        cvNumberOfPlayers.setNumberOfPlayers(numberOfPlayer);
+        cvNumberOfPlayers.setMaxNumberOfPlayers(maxNumberOfPlayer);
     }
 
     @Override

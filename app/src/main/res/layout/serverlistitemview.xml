@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <fr.cvlaminck.immso.views.server.StatusView
+        android:id="@+id/cvStatus"
+        android:layout_width="25dp"
+        android:layout_height="match_parent"
+        app:fullStatusColor="?fullStatusColor"
+        app:offlineStatusColor="?offlineStatusColor"
+        app:onlineStatusColor="?onlineStatusColor" />
+
+    <LinearLayout
+        android:id="@+id/llInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/paddingSmall"
+        android:paddingLeft="@dimen/paddingMedium">
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textAppearance="@style/Immso.Text.ServerName" />
+
+        <TextView
+            android:id="@+id/txtVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/paddingSmall"
+            android:text="Minecraft x.x.x"
+            android:textAppearance="@style/Immso.Text.ServerVersion" />
+
+        <TextView
+            android:id="@+id/txtAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="my.server.host:port"
+            android:textAppearance="@style/Immso.Text.ServerAddress" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rlMoreInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <fr.cvlaminck.immso.views.server.NumberOfPlayersView
+            android:id="@+id/cvNumberOfPlayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="4dp"
+            app:numberOfPlayers="21"
+            app:maxNumberOfPlayers="100"
+            app:numberOfPlayersTextSize="28sp"
+            app:maxNumberOfPlayersTextColor="@color/lightGray"
+            app:maxNumberOfPlayersTextSize="13sp"
+            app:maxNumberOfPlayersTypeface="monospace"
+            app:separatorColor="@color/lightGray"
+            app:separatorLength="16dp"
+            app:separatorSpacing="2dp"
+            app:separatorWidth="1dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

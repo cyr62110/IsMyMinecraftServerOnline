@@ -46,7 +46,7 @@ public class MinecraftServerEntity
     private int maxNumberOfPlayer = 0;
 
     @DatabaseField(canBeNull = false)
-    private MinecraftServer.Status status = MinecraftServer.Status.UNKNOWN;
+    private MinecraftServer.DetailedStatus detailedStatus = MinecraftServer.DetailedStatus.UNKNOWN;
 
     /**
      * When this server has been detected offline for the first time.
@@ -74,7 +74,15 @@ public class MinecraftServerEntity
         numberOfPlayer = server.getNumberOfPlayer();
         maxNumberOfPlayer = server.getMaxNumberOfPlayer();
         lastUpdateTime = server.getLastUpdateTime();
-        setStatus(server.getStatus(), notifyObservers);
+        setStatus(server.getDetailedStatus(), notifyObservers);
+    }
+
+    /**
+     * Returns true if the server is actually online and responded the last ping
+     * request.
+     */
+    public boolean isOnline() {
+        return detailedStatus == MinecraftServer.DetailedStatus.ONLINE || detailedStatus == MinecraftServer.DetailedStatus.FULL;
     }
 
     public int getId() {
@@ -153,25 +161,25 @@ public class MinecraftServerEntity
         this.maxNumberOfPlayer = maxNumberOfPlayer;
     }
 
-    public MinecraftServer.Status getStatus() {
-        return status;
+    public MinecraftServer.DetailedStatus getDetailedStatus() {
+        return detailedStatus;
     }
 
-    public void setStatus(MinecraftServer.Status status, boolean notifyObservers) {
-        if(status != this.status) {
-            this.status = status;
+    public void setStatus(MinecraftServer.DetailedStatus detailedStatus, boolean notifyObservers) {
+        if(detailedStatus != this.detailedStatus) {
+            this.detailedStatus = detailedStatus;
             setChanged();
             if(notifyObservers)
                 notifyObservers();
         }
         //We reset the offlineSince only if the status changed to ONLINE
-        if(status == MinecraftServer.Status.ONLINE) {
+        if(detailedStatus == MinecraftServer.DetailedStatus.ONLINE) {
             offlineSince = 0;
         }
     }
 
-    public void setStatus(MinecraftServer.Status status) {
-        setStatus(status, false);
+    public void setDetailedStatus(MinecraftServer.DetailedStatus detailedStatus) {
+        setStatus(detailedStatus, false);
     }
 
     public long getOfflineSince() {
@@ -180,7 +188,7 @@ public class MinecraftServerEntity
 
     public void setOfflineSince(long offlineSince) {
         //The offlineSince value can be set only if the server is actually offline
-        if(status != MinecraftServer.Status.OFFLINE)
+        if(detailedStatus != MinecraftServer.DetailedStatus.OFFLINE)
             return;
         this.offlineSince = offlineSince;
     }

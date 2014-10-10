@@ -1,9 +1,12 @@
 package fr.cvlaminck.immso.minecraft.v1_7.resources.status;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Version information returned in the status information.
  * Serialized using JSON.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VersionStatusInformationResource {
 
     /**
