@@ -1,6 +1,7 @@
 package fr.cvlaminck.immso.activities;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 import android.widget.ListView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -28,10 +29,14 @@ public class HomeActivity
     protected ListView lvServers;
 
     @ViewById
+    protected View llEmpty;
+
+    @ViewById
     protected SwipeRefreshLayout srlRefresh;
 
     @AfterViews
     protected void afterViews() {
+        lvServers.setEmptyView(llEmpty);
         srlRefresh.setOnRefreshListener(onRefreshListener);
         //We configure the swipe to dismiss using Roman Nurik's code
         final SwipeDismissListViewTouchListener touchListener = new SwipeDismissListViewTouchListener(lvServers, dismissCallbacks);
@@ -47,6 +52,9 @@ public class HomeActivity
         final List<MinecraftServerEntity> servers = pingService.getServers();
         final ServerAdapter adapter = new ServerAdapter(this, servers);
         lvServers.setAdapter(adapter);
+        //If the list is empty, we disable the refresh layout
+        if(servers.isEmpty())
+            srlRefresh.setEnabled(false);
     }
 
     @Override
@@ -58,6 +66,9 @@ public class HomeActivity
      * Refresh the status of all server in the list
      */
     private void refreshServerStatus() {
+        //If the list is empty, we do not need to refresh
+        if(lvServers.getAdapter() == null || lvServers.getAdapter().isEmpty())
+            return;
         pingService.refreshServerStatus();
     }
 
@@ -82,6 +93,8 @@ public class HomeActivity
     public void onServerListChanged(List<MinecraftServerEntity> servers) {
         if(lvServers != null && lvServers.getAdapter() != null)
             ((ServerAdapter)lvServers.getAdapter()).notifyDataSetChanged();
+        //If the list is empty, we disable the refresh layout
+        srlRefresh.setEnabled(!servers.isEmpty());
     }
 
     @Override

@@ -2,7 +2,12 @@
 <resources>
     <string name="app_name">Is My Minecraft Server Online</string>
 
-    <string name="homeactivity_miPreferences">Preferences</string>
+    <string name="homeactivity_miAdd_title">Add</string>
+    <string name="homeactivity_miRefresh_title">Refresh</string>
+    <string name="homeactivity_miPreferences_title">Preferences</string>
+    <string name="homeactivity_miAbout_title">About</string>
+
+    <string name="serverlistemptyview_lblEmpty">You are not observing any Minecraft server.\r\nPress on the <b>\'+\'</b> to start observing your first one.</string>
 
     <string name="addserveractivity_label">Add a server</string>
     <string name="done">Done</string>
@@ -10,7 +15,6 @@
     <string name="addserveractivity_txtName_error">You must enter a name. Must not be empty or contains only spaces.</string>
     <string name="addserveractivity_txtHost_errorEmpty">You must enter an host. Must not be empty or contains only spaces.</string>
     <string name="addserveractivity_txtPort_error">Port must be a decimal number between 1 and 65535.</string>
-
 
     <string name="userpreferenceactivity_label">Preferences</string>
     <string name="userpreferences_refreshCategory_title">Refresh</string>
@@ -26,6 +30,14 @@
     <string name="timeformatter_minutes">minutes</string>
     <string name="timeformatter_hours">hours</string>
     <string name="timeformatter_days">days</string>
+    <string name="timeformatter_second">second</string>
+    <string name="timeformatter_minute">minute</string>
+    <string name="timeformatter_hour">hour</string>
+    <string name="timeformatter_day">day</string>
+    <string name="timeformatter_seconds_small">s</string>
+    <string name="timeformatter_minutes_small">mn</string>
+    <string name="timeformatter_hours_small">h</string>
+    <string name="timeformatter_days_small">d</string>
 
     <string name="offlineServerNotification_oneServer_contentText">Your server is offline since %s</string>
     <string name="offlineServerNotification_multipleServers_contentTitle">%d servers offline</string>

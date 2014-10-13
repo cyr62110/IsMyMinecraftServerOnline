@@ -3,25 +3,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/miAdd"
-        android:title="Add"
-        android:icon="@drawable/ic_launcher"
+        android:title="@string/homeactivity_miAdd_title"
+        android:icon="@drawable/ic_action_new"
         android:showAsAction="always" />
 
     <item
         android:id="@+id/miRefresh"
-        android:title="Refresh"
-        android:icon="@drawable/ic_launcher"
+        android:title="@string/homeactivity_miRefresh_title"
         android:showAsAction="never" />
 
     <item
         android:id="@+id/miPreferences"
-        android:title="@string/homeactivity_miPreferences"
+        android:title="@string/homeactivity_miPreferences_title"
         android:showAsAction="never"
         />
 
     <item
         android:id="@+id/miAbout"
-        android:title="About"
+        android:title="@string/homeactivity_miAbout_title"
         android:showAsAction="never"
         />
 </menu>
