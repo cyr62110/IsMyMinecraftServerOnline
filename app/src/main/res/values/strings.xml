@@ -42,5 +42,8 @@
     <string name="offlineServerNotification_oneServer_contentText">Your server is offline since %s</string>
     <string name="offlineServerNotification_multipleServers_contentTitle">%d servers offline</string>
     <string name="offlineServerNotification_multipleServers_contentText">\'%1$s\', and %2$d more are offline since at least %3$s</string>
+    <string name="serverviewheaderview_status_online">Online</string>
+    <string name="serverlistheaderview_status_offline">Offline</string>
+    <string name="serverlistitemview_lblOfflineSince">Offline since</string>
 
 </resources>

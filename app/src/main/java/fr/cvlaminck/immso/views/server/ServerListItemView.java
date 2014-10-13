@@ -5,16 +5,19 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
 import fr.cvlaminck.immso.R;
 import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
 import fr.cvlaminck.immso.minecraft.MinecraftServer;
+import fr.cvlaminck.immso.utils.TimeFormatter;
 
 @EViewGroup(R.layout.serverlistitemview)
 public class ServerListItemView
@@ -34,7 +37,16 @@ public class ServerListItemView
     protected StatusView cvStatus;
 
     @ViewById
+    protected View llOfflineSince;
+
+    @ViewById
+    protected TextView txtOfflineSince;
+
+    @ViewById
     protected NumberOfPlayersView cvNumberOfPlayers;
+
+    @Bean
+    protected TimeFormatter timeFormatter;
 
     private MinecraftServerEntity server;
 
@@ -70,6 +82,9 @@ public class ServerListItemView
             //If the server is online, we update the view displaying the number of players.
             if(server.getDetailedStatus() == MinecraftServer.DetailedStatus.ONLINE)
                 setNumberOfPlayer(server.getNumberOfPlayer(), server.getMaxNumberOfPlayer());
+            //If the server is offline, we display the offline since
+            if(server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE)
+                setOfflineSince(server.getOfflineSince());
         }
     }
 
@@ -96,17 +111,20 @@ public class ServerListItemView
         switch (detailedStatus.equivalentStatus()) {
             case UNKNOWN:
                 //We are probably pinging the server, so we display the progress view
+                llOfflineSince.setVisibility(View.GONE);
                 cvNumberOfPlayers.setVisibility(View.GONE);
                 //TODO : display the progress view
                 break;
             case OFFLINE:
                 //The server is offline, we hide everything.
                 //TODO : maybe show an offline since view
+                llOfflineSince.setVisibility(View.VISIBLE);
                 cvNumberOfPlayers.setVisibility(View.GONE);
                 break;
             case ONLINE:
                 //The server is online, we display the number of players view
                 //TODO : hide other view when implemented
+                llOfflineSince.setVisibility(View.GONE);
                 cvNumberOfPlayers.setVisibility(VISIBLE);
                 break;
         }
@@ -115,6 +133,11 @@ public class ServerListItemView
     private void setNumberOfPlayer(int numberOfPlayer, int maxNumberOfPlayer) {
         cvNumberOfPlayers.setNumberOfPlayers(numberOfPlayer);
         cvNumberOfPlayers.setMaxNumberOfPlayers(maxNumberOfPlayer);
+    }
+
+    private void setOfflineSince(long offlineSince) {
+        offlineSince = new Date().getTime() - offlineSince;
+        txtOfflineSince.setText(timeFormatter.format(offlineSince, true));
     }
 
     @Override

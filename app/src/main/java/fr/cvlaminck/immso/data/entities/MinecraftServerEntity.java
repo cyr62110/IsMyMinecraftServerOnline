@@ -85,6 +85,13 @@ public class MinecraftServerEntity
         return detailedStatus == MinecraftServer.DetailedStatus.ONLINE || detailedStatus == MinecraftServer.DetailedStatus.FULL;
     }
 
+    /**
+     * Return the status of the server.
+     */
+    public MinecraftServer.Status getStatus() {
+        return detailedStatus.equivalentStatus();
+    }
+
     public int getId() {
         return id;
     }

@@ -2,6 +2,7 @@ package fr.cvlaminck.immso.activities;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -101,6 +102,8 @@ public class HomeActivity
     public void onAllServerStatusUpdated(List<MinecraftServerEntity> servers) {
         //We notify the UI that the refresh is finished
         srlRefresh.setRefreshing(false);
+        if(lvServers.getAdapter() != null)
+            ((BaseAdapter)lvServers.getAdapter()).notifyDataSetChanged();
     }
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
