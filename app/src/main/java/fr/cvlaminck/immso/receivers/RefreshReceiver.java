@@ -37,7 +37,7 @@ import fr.cvlaminck.immso.services.impl.PingService_;
 public class RefreshReceiver
         extends BroadcastReceiver {
     private final static String TAG = RefreshReceiver.class.getSimpleName();
-    private final static boolean DEBUG = true;
+    private final static boolean DEBUG = false;
 
     @Pref
     protected UserPreferences_ userPreferences;

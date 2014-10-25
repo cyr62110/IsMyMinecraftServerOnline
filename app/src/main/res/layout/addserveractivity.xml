@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:imeOptions="actionNext"
-        android:hint="My minecraft server" />
+        android:hint="@string/addserveractivity_txtName_hint" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="play.epicube.fr"
+            android:hint="@string/addserveractivity_txtHost_hint"
             android:inputType="textUri"
             android:imeOptions="actionNext"
             android:singleLine="true" />

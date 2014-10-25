@@ -28,7 +28,9 @@
     <string name="done">Done</string>
     <string name="discard">Discard</string>
     <string name="addserveractivity_txtName_error">You must enter a name. Must not be empty or contains only spaces.</string>
+    <string name="addserveractivity_txtName_hint">My minecraft server</string>
     <string name="addserveractivity_txtHost_errorEmpty">You must enter an host. Must not be empty or contains only spaces.</string>
+    <string name="addserveractivity_txtHost_hint">my.server.com</string>
     <string name="addserveractivity_txtPort_error">Port must be a decimal number between 1 and 65535.</string>
 
     <string name="userpreferenceactivity_label">Preferences</string>
@@ -60,5 +62,6 @@
     <string name="serverviewheaderview_status_online">Online</string>
     <string name="serverlistheaderview_status_offline">Offline</string>
     <string name="serverlistitemview_lblOfflineSince">Offline since</string>
+
 
 </resources>

@@ -63,7 +63,7 @@ import rx.util.functions.Func2;
 public class PingService
         extends IntentService {
     private final static String TAG = PingService.class.getSimpleName();
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
 
     private final static int AUTOMATIC_REFRESH_REQUEST_CODE = 42;
 
@@ -184,7 +184,7 @@ public class PingService
                 alarmManager.setInexactRepeating(
                         AlarmManager.ELAPSED_REALTIME_WAKEUP,
                         0L,
-                        30000, //period,
+                        period,
                         intent
                 );
             } else {
@@ -309,12 +309,22 @@ public class PingService
                 .subscribeOn(Schedulers.currentThread())
                 .subscribe(new Action1<List<MinecraftServerEntity>>() {
                     @Override
-                    public void call(List<MinecraftServerEntity> offlineServers) {
-                        if (offlineServers.size() > 0) {
-                            final Notification notification = buildNotificationForOfflineServers(offlineServers);
-                            notificationManager.notify(OFFLINE_SERVER_NOTIFICATION_ID, notification);
-                        } else
-                            notificationManager.cancel(OFFLINE_SERVER_NOTIFICATION_ID);
+                    public void call(List<MinecraftServerEntity> serversRequiringNotification) {
+                        if(DEBUG)
+                            Log.d(TAG, "Bind count before notification : " + bindCount);
+                        //If the service is bound to an activity, we do not notify the user
+                        if(bindCount > 0) {
+                            if(DEBUG)
+                                Log.d(TAG, "Activity is displayed to end-user. Notification muted.");
+                            if(serversRequiringNotification.size() == 0)
+                                notificationManager.cancel(OFFLINE_SERVER_NOTIFICATION_ID);
+                        } else {
+                            if (serversRequiringNotification.size() > 0) {
+                                final Notification notification = buildNotificationForOfflineServers(serversRequiringNotification);
+                                notificationManager.notify(OFFLINE_SERVER_NOTIFICATION_ID, notification);
+                            } else
+                                notificationManager.cancel(OFFLINE_SERVER_NOTIFICATION_ID);
+                        }
                     }
                 });
     }
@@ -331,7 +341,7 @@ public class PingService
     private void buildNotificationForOneOfflineServer(NotificationCompat.Builder builder, MinecraftServerEntity offlineServer) {
         final long offlineTime = offlineServer.getLastUpdateTime() - offlineServer.getOfflineSince();
         builder
-                .setSmallIcon(R.drawable.ic_launcher) //TODO : replace with the real icon of the application
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(offlineServer.getName())
                 .setContentText(getString(R.string.offlineServerNotification_oneServer_contentText, timeFormatter.format(offlineTime)));
         //TODO : add the favicon of the server if available. for 1.7+ servers only
@@ -341,7 +351,7 @@ public class PingService
         final MinecraftServerEntity offlineServer = offlineServers.get(0);
         final long offlineTime = offlineServer.getLastUpdateTime() - offlineServer.getOfflineSince();
         builder
-                .setSmallIcon(R.drawable.ic_launcher) //TODO : replace with the real icon of the application
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(getString(R.string.offlineServerNotification_multipleServers_contentTitle, offlineServers.size()))
                 .setContentText(getString(R.string.offlineServerNotification_multipleServers_contentText, offlineServer.getName(),
                         offlineServers.size() - 1, timeFormatter.format(offlineTime)));
