@@ -1,3 +1,18 @@
+/**
+ * Copyright 2014 Cyril Vlaminck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package fr.cvlaminck.immso.views.server;
 
 import android.content.Context;
@@ -173,7 +188,7 @@ public class NumberOfPlayersView
 
     private void parseCustomAttributes(TypedArray attrs) {
         final int n = attrs.getIndexCount();
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             int attr = attrs.getIndex(i);
             switch (attr) {
                 case R.styleable.NumberOfPlayersView_numberOfPlayers:
@@ -319,11 +334,11 @@ public class NumberOfPlayersView
     private void refreshTypefaceForPaint(Paint paint, String fontFamily, int textStyle, int typeface) {
         //Now, we take care of the typeface. This is a bit tricky
         Typeface tf = null;
-        if(fontFamily != null)
+        if (fontFamily != null)
             tf = Typeface.create(fontFamily, textStyle);
         //If we have found a font matching the family and the style, we have finished here
         //Otherwise, we use the typeface and the style to find the right font to use
-        if(tf == null) {
+        if (tf == null) {
             switch (typeface) {
                 case SANS:
                     tf = Typeface.SANS_SERIF;
@@ -336,8 +351,8 @@ public class NumberOfPlayersView
                     break;
             }
             //If we have a style to apply, we apply it
-            if(textStyle > 0) {
-                if(tf == null)
+            if (textStyle > 0) {
+                if (tf == null)
                     tf = Typeface.defaultFromStyle(textStyle);
                 else
                     tf = Typeface.create(tf, textStyle);
@@ -372,7 +387,7 @@ public class NumberOfPlayersView
         final int oldMaxNumberOfPlayers = this.maxNumberOfPlayers;
         this.maxNumberOfPlayers = maxNumberOfPlayers;
         //If the size of the number has changed, we request a relayout.
-        if(Integer.toString(oldMaxNumberOfPlayers).length() != Integer.toString(maxNumberOfPlayers).length())
+        if (Integer.toString(oldMaxNumberOfPlayers).length() != Integer.toString(maxNumberOfPlayers).length())
             requestLayout();
         invalidate();
     }

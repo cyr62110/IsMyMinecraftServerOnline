@@ -13,7 +13,8 @@ apply plugin: 'android-apt'
 
 ext {
     androidAnnotationsVersion = '3.1'
-    androidToolsVersion = '20.0.0'
+    androidToolsVersion = '21.0.1'
+    supportLibraryVersion = '21.0.0'
 }
 
 dependencies {
@@ -28,7 +29,7 @@ dependencies {
     compile "com.netflix.rxjava:rxjava-android:0.10.1"
 
     //Support v13 to use big view notification
-    compile "com.android.support:support-v4:$androidToolsVersion"
+    compile "com.android.support:support-v4:$supportLibraryVersion"
 
     compile project(':minecraft1.7+SupportLibrary')
 }
@@ -41,13 +42,13 @@ apt {
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 21
     buildToolsVersion androidToolsVersion
 
     defaultConfig {
         applicationId "fr.cvlaminck.immso"
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }

@@ -1,3 +1,18 @@
+/**
+ * Copyright 2014 Cyril Vlaminck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package fr.cvlaminck.immso.data.entities;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -10,7 +25,7 @@ import fr.cvlaminck.immso.minecraft.MinecraftServer;
 
 @DatabaseTable(tableName = "servers", daoClass = MinecraftServerDao.class)
 public class MinecraftServerEntity
-    extends Observable {
+        extends Observable {
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -173,14 +188,14 @@ public class MinecraftServerEntity
     }
 
     public void setStatus(MinecraftServer.DetailedStatus detailedStatus, boolean notifyObservers) {
-        if(detailedStatus != this.detailedStatus) {
+        if (detailedStatus != this.detailedStatus) {
             this.detailedStatus = detailedStatus;
             setChanged();
-            if(notifyObservers)
+            if (notifyObservers)
                 notifyObservers();
         }
         //We reset the offlineSince only if the status changed to ONLINE
-        if(detailedStatus == MinecraftServer.DetailedStatus.ONLINE) {
+        if (detailedStatus == MinecraftServer.DetailedStatus.ONLINE) {
             offlineSince = 0;
         }
     }
@@ -195,7 +210,7 @@ public class MinecraftServerEntity
 
     public void setOfflineSince(long offlineSince) {
         //The offlineSince value can be set only if the server is actually offline
-        if(detailedStatus != MinecraftServer.DetailedStatus.OFFLINE)
+        if (detailedStatus != MinecraftServer.DetailedStatus.OFFLINE)
             return;
         this.offlineSince = offlineSince;
     }

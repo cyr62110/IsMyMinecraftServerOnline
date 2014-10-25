@@ -1,3 +1,18 @@
+/**
+ * Copyright 2014 Cyril Vlaminck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package fr.cvlaminck.immso.views.server;
 
 import android.content.Context;
@@ -21,8 +36,8 @@ import fr.cvlaminck.immso.utils.TimeFormatter;
 
 @EViewGroup(R.layout.serverlistitemview)
 public class ServerListItemView
-    extends LinearLayout
-    implements Observer {
+        extends LinearLayout
+        implements Observer {
 
     @ViewById
     protected TextView txtName;
@@ -60,7 +75,7 @@ public class ServerListItemView
 
     public void setServer(MinecraftServerEntity server) {
         //Remove the previous object observed by this view
-        if(this.server != null)
+        if (this.server != null)
             this.server.deleteObserver(this);
         //Then, we store the new object and register as an observer
         this.server = server;
@@ -77,13 +92,13 @@ public class ServerListItemView
         setAddress(server.getHost(), server.getPort());
         //If we have a status, we display more information on the server
         setStatus(server.getDetailedStatus(), animated);
-        if(server.getDetailedStatus() != MinecraftServer.DetailedStatus.UNKNOWN) {
+        if (server.getDetailedStatus() != MinecraftServer.DetailedStatus.UNKNOWN) {
             setVersion(server.getVersion());
             //If the server is online, we update the view displaying the number of players.
-            if(server.getDetailedStatus() == MinecraftServer.DetailedStatus.ONLINE)
+            if (server.getDetailedStatus() == MinecraftServer.DetailedStatus.ONLINE)
                 setNumberOfPlayer(server.getNumberOfPlayer(), server.getMaxNumberOfPlayer());
             //If the server is offline, we display the offline since
-            if(server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE)
+            if (server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE)
                 setOfflineSince(server.getOfflineSince());
         }
     }
@@ -100,8 +115,17 @@ public class ServerListItemView
     private void setVersion(String version) {
         //TODO Display unknown if no information about the server
         //TODO Do not add Minecraft if version is not starting with a number. ex. Epicube
-        final String sVersion = String.format("Minecraft %s", version);
-        txtVersion.setText(sVersion);
+        if (version == null || version.isEmpty()) {
+            txtVersion.setVisibility(View.INVISIBLE);
+        } else {
+            final String sVersion;
+            if (Character.isDigit(version.charAt(0)))
+                sVersion = "Minecraft " + version;
+            else
+                sVersion = version;
+            txtVersion.setVisibility(View.VISIBLE);
+            txtVersion.setText(sVersion);
+        }
     }
 
     private void setStatus(MinecraftServer.DetailedStatus detailedStatus, boolean animated) {
@@ -150,7 +174,7 @@ public class ServerListItemView
     protected void finalize() throws Throwable {
         super.finalize();
         //Do not forget to remove the reference in the observable
-        if(server != null)
+        if (server != null)
             server.deleteObserver(this);
     }
 }

@@ -1,3 +1,18 @@
+/**
+ * Copyright 2014 Cyril Vlaminck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package fr.cvlaminck.immso.activities;
 
 import android.app.ActionBar;
@@ -11,7 +26,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.ViewById;
@@ -19,7 +33,6 @@ import org.androidannotations.annotations.ViewById;
 import fr.cvlaminck.immso.R;
 import fr.cvlaminck.immso.adapters.ToolsVersionAdapter;
 import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
-import fr.cvlaminck.immso.minecraft.MinecraftServer;
 import fr.cvlaminck.immso.minecraft.MinecraftToolsVersion;
 import fr.cvlaminck.immso.services.api.PingService;
 
@@ -85,7 +98,7 @@ public class AddServerActivity
 
     @EditorAction(R.id.txtPort)
     protected void txtPortEditorAction(TextView textView, int actionId) {
-        if(actionId == EditorInfo.IME_ACTION_DONE) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
             done();
         }
     }
@@ -99,7 +112,7 @@ public class AddServerActivity
         bValue &= getHost(server);
         bValue &= getPort(server);
         //If one of the value entered by the user does not match the requirement we stop here
-        if(!bValue)
+        if (!bValue)
             return;
         //Otherwise, we save the value in our service and finish this activity
         pingService.addServer(server);
@@ -118,7 +131,7 @@ public class AddServerActivity
 
     private boolean getName(MinecraftServerEntity server) {
         final String name = txtName.getText().toString().trim();
-        if(name.isEmpty()) {
+        if (name.isEmpty()) {
             txtName.setError(getString(R.string.addserveractivity_txtName_error));
             return false;
         } else {
@@ -130,7 +143,7 @@ public class AddServerActivity
 
     private boolean getHost(MinecraftServerEntity server) {
         final String host = txtHost.getText().toString().trim();
-        if(host.isEmpty()) {
+        if (host.isEmpty()) {
             txtHost.setError(getString(R.string.addserveractivity_txtHost_errorEmpty));
             return false;
             //TODO : check host pattern
@@ -144,12 +157,13 @@ public class AddServerActivity
     private boolean getPort(MinecraftServerEntity server) {
         try {
             final int port = Integer.parseInt(txtPort.getText().toString());
-            if(port >= 1 || port <= 65535) {
+            if (port >= 1 || port <= 65535) {
                 txtPort.setError(null);
                 server.setPort(port);
                 return true;
             }
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        }
         txtPort.setError(getString(R.string.addserveractivity_txtPort_error));
         return false;
     }

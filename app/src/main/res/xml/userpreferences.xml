@@ -1,33 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2014 Cyril Vlaminck
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="@string/userpreferences_refreshCategory_title">
+    <PreferenceCategory android:title="@string/userpreferences_refreshCategory_title">
 
         <CheckBoxPreference
             android:key="@string/userpreferences_refreshAutomaticallyInBackground_key"
             android:title="@string/userpreferences_refreshAutomaticallyInBackground_title"
-            android:defaultValue="true"
-            />
+            android:defaultValue="true" />
 
         <ListPreference
             android:key="@string/userpreferences_timeInMSBetweenChecks_key"
             android:title="@string/userpreferences_timeInMSBeetweenChecks_title"
             android:entries="@array/userpreferences_timeInMSBeetweenChecks_entries"
             android:entryValues="@array/userpreferences_timeInMSBeetweenChecks_entryValues"
-            android:defaultValue="900000"
-            />
+            android:defaultValue="900000" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/userpreferences_notificationsCategory_title">
+    <PreferenceCategory android:title="@string/userpreferences_notificationsCategory_title">
 
         <CheckBoxPreference
             android:key="@string/userpreferences_notifyWhenServerGoesOffline_key"
             android:title="@string/userpreferences_notifyWhenServerGoesOffline_title"
-            android:defaultValue="true"
-            />
+            android:defaultValue="true" />
 
     </PreferenceCategory>
 

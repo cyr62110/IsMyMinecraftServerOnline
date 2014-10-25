@@ -1,3 +1,18 @@
+/**
+ * Copyright 2014 Cyril Vlaminck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package fr.cvlaminck.immso.services.impl;
 
 import android.app.AlarmManager;
@@ -160,8 +175,8 @@ public class PingService
     private void configureAutomaticRefresh(boolean force) {
         PendingIntent intent = automaticRefreshPendingIntent(PendingIntent.FLAG_NO_CREATE);
         //If the user has enabled the automatic refresh
-        if(userPreferences.refreshAutomaticallyInBackground().get()) {
-            if(intent == null || force) {
+        if (userPreferences.refreshAutomaticallyInBackground().get()) {
+            if (intent == null || force) {
                 intent = automaticRefreshPendingIntent(0);
                 final long period = userPreferences.timeInMSBetweenChecks().get();
                 if (DEBUG)
@@ -173,7 +188,7 @@ public class PingService
                         intent
                 );
             } else {
-                if(DEBUG)
+                if (DEBUG)
                     Log.d(TAG, "AlarmManager already configured to trigger automatic refresh operation.");
             }
         }
@@ -182,7 +197,7 @@ public class PingService
     private void clearAutomaticRefresh() {
         Log.d(TAG, "Clearing AlarmManager. Refresh operation will no more be triggered automatically");
         final PendingIntent intent = automaticRefreshPendingIntent(PendingIntent.FLAG_NO_CREATE);
-        if(intent != null)
+        if (intent != null)
             alarmManager.cancel(intent);
     }
 
@@ -200,10 +215,10 @@ public class PingService
             return;
         }
         //If the list does not contain any server, we just skip to avoid wake-lock
-        if(servers.isEmpty()) {
-            if(DEBUG)
+        if (servers.isEmpty()) {
+            if (DEBUG)
                 Log.d(TAG, "No observed server. Skipping");
-            if(serverStatusChangedListener != null)
+            if (serverStatusChangedListener != null)
                 serverStatusChangedListener.onAllServerStatusUpdated(servers);
             return;
         }
@@ -246,7 +261,7 @@ public class PingService
                     @Override
                     public MinecraftServerEntity call(MinecraftServerEntity server) {
                         //If the server has gone offline, we update the offline since.
-                        if(server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE && server.getOfflineSince() == 0)
+                        if (server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE && server.getOfflineSince() == 0)
                             server.setOfflineSince(server.getLastUpdateTime());
                         return server;
                     }
@@ -270,7 +285,7 @@ public class PingService
      */
     private void notifyWhenServerIsOffline() {
         //We check if the user has enabled the notification
-        if(!userPreferences.notifyWhenServerGoesOffline().get()) {
+        if (!userPreferences.notifyWhenServerGoesOffline().get()) {
             Log.d(TAG, "Notifications when a server goes offline are not enabled. Skipping");
             return;
         }
@@ -295,7 +310,7 @@ public class PingService
                 .subscribe(new Action1<List<MinecraftServerEntity>>() {
                     @Override
                     public void call(List<MinecraftServerEntity> offlineServers) {
-                        if(offlineServers.size() > 0) {
+                        if (offlineServers.size() > 0) {
                             final Notification notification = buildNotificationForOfflineServers(offlineServers);
                             notificationManager.notify(OFFLINE_SERVER_NOTIFICATION_ID, notification);
                         } else
@@ -306,7 +321,7 @@ public class PingService
 
     private Notification buildNotificationForOfflineServers(List<MinecraftServerEntity> offlineServers) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        if(offlineServers.size() == 1)
+        if (offlineServers.size() == 1)
             buildNotificationForOneOfflineServer(builder, offlineServers.get(0));
         else
             buildNotificationForMultipleOfflineServers(builder, offlineServers);
@@ -344,17 +359,17 @@ public class PingService
         //Then, we add this server to the list
         servers.add(server);
         //And we notify our listener that the data set has changed
-        if(serverStatusChangedListener != null)
+        if (serverStatusChangedListener != null)
             serverStatusChangedListener.onServerListChanged(servers);
     }
 
     /*package*/ void removeServer(MinecraftServerEntity server) {
-        if(DEBUG)
+        if (DEBUG)
             Log.d(TAG, String.format("Removing server '%s' from the list", server.getName()));
         //We check if the server has an ID, if not well there is nothing to remove because
         //it is not in ths list
-        if(server.getId() == 0) {
-            if(DEBUG)
+        if (server.getId() == 0) {
+            if (DEBUG)
                 Log.d(TAG, String.format("Server '%s' has no id. Skipping remove from DB operation", server.getName()));
         } else {
             //We remove the server from the database if it has an id
@@ -363,7 +378,7 @@ public class PingService
         //Then we remove it from the list
         servers.remove(server);
         //Finally we notify our listener that the data set has changed
-        if(serverStatusChangedListener != null)
+        if (serverStatusChangedListener != null)
             serverStatusChangedListener.onServerListChanged(servers);
     }
 
@@ -386,7 +401,7 @@ public class PingService
         public void onCompleted() {
             subscription = null;
             //We release the wake-lock
-            if(DEBUG)
+            if (DEBUG)
                 Log.d(TAG, "Releasing wake-lock");
             wakeLock.release();
             if (DEBUG)
@@ -417,24 +432,24 @@ public class PingService
     private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener =
             new SharedPreferences.OnSharedPreferenceChangeListener() {
 
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals(getString(R.string.userpreferences_refreshAutomaticallyInBackground_key))){
-                if(userPreferences.refreshAutomaticallyInBackground().get()) {
-                    configureAutomaticRefresh(false);
-                } else {
-                    clearAutomaticRefresh();
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    if (key.equals(getString(R.string.userpreferences_refreshAutomaticallyInBackground_key))) {
+                        if (userPreferences.refreshAutomaticallyInBackground().get()) {
+                            configureAutomaticRefresh(false);
+                        } else {
+                            clearAutomaticRefresh();
+                        }
+                    } else if (key.equals(getString(R.string.userpreferences_timeInMSBetweenChecks_key))) {
+                        //We should change the timer period only if the automatic refresh is enabled by the user
+                        if (userPreferences.refreshAutomaticallyInBackground().get()) {
+                            clearAutomaticRefresh();
+                            configureAutomaticRefresh(true);
+                        }
+                    }
                 }
-            } else if (key.equals(getString(R.string.userpreferences_timeInMSBetweenChecks_key))) {
-                //We should change the timer period only if the automatic refresh is enabled by the user
-                if(userPreferences.refreshAutomaticallyInBackground().get()) {
-                    clearAutomaticRefresh();
-                    configureAutomaticRefresh(true);
-                }
-            }
-        }
 
-    };
+            };
 
 
 }
