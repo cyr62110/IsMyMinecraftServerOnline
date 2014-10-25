@@ -18,12 +18,18 @@ package fr.cvlaminck.immso.activities;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.res.IntArrayRes;
+import org.androidannotations.annotations.res.StringArrayRes;
+import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import fr.cvlaminck.immso.R;
@@ -36,19 +42,39 @@ public class UserPreferenceActivity
 
     private PingServiceConnection pingServiceConnection = null;
 
+    private Preference updateTimeBetweenRefresh = null;
+
     @Pref
     protected UserPreferences_ userPreferences;
+
+    @StringRes(R.string.userpreferences_timeInMSBetweenChecks_key)
+    protected String updateTimeBetweenRefreshKey;
+
+    @StringArrayRes(R.array.userpreferences_timeInMSBeetweenChecks_entries)
+    protected String[] updateTimeBetweenRefreshEntries;
+
+    @StringArrayRes(R.array.userpreferences_timeInMSBeetweenChecks_entryValues)
+    protected String[] updateTimeBetweenRefreshEntryValues = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.userpreferences);
+
+        this.updateTimeBetweenRefresh = findPreference(updateTimeBetweenRefreshKey);
+
+        updateUpdateTimeBetweenRefreshSummary();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        //We register a listener to update the UI when a preference value changes
+        final SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        appPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
+
         if (pingServiceConnection == null) {
             final Intent intent = PingService_.intent(this).get();
             pingServiceConnection = new PingServiceConnection();
@@ -64,11 +90,37 @@ public class UserPreferenceActivity
     @Override
     protected void onStop() {
         super.onStop();
+
+        //We do not forget to unregister the listener
+        final SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        appPreferences.unregisterOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
+
         if (pingServiceConnection != null) {
             unbindService(pingServiceConnection);
             pingServiceConnection = null;
         }
     }
+
+    private void updateUpdateTimeBetweenRefreshSummary() {
+        for(int i = 0; i < updateTimeBetweenRefreshEntries.length; i++) {
+            if(userPreferences.timeInMSBetweenChecks().get() == Long.parseLong(updateTimeBetweenRefreshEntryValues[i])) {
+                updateTimeBetweenRefresh.setSummary(updateTimeBetweenRefreshEntries[i]);
+                return;
+            }
+        }
+    }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    if (key.equals(updateTimeBetweenRefreshKey)) {
+                        updateUpdateTimeBetweenRefreshSummary();
+                    }
+                }
+
+            };
 
     private class PingServiceConnection implements ServiceConnection {
 

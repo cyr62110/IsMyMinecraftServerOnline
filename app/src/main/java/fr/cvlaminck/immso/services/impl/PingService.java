@@ -195,7 +195,8 @@ public class PingService
     }
 
     private void clearAutomaticRefresh() {
-        Log.d(TAG, "Clearing AlarmManager. Refresh operation will no more be triggered automatically");
+        if(DEBUG)
+            Log.d(TAG, "Clearing AlarmManager. Refresh operation will no more be triggered automatically");
         final PendingIntent intent = automaticRefreshPendingIntent(PendingIntent.FLAG_NO_CREATE);
         if (intent != null)
             alarmManager.cancel(intent);
@@ -286,7 +287,8 @@ public class PingService
     private void notifyWhenServerIsOffline() {
         //We check if the user has enabled the notification
         if (!userPreferences.notifyWhenServerGoesOffline().get()) {
-            Log.d(TAG, "Notifications when a server goes offline are not enabled. Skipping");
+            if(DEBUG)
+                Log.d(TAG, "Notifications when a server goes offline are not enabled. Skipping");
             return;
         }
         //TODO

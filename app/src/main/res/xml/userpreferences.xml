@@ -20,6 +20,7 @@
         <CheckBoxPreference
             android:key="@string/userpreferences_refreshAutomaticallyInBackground_key"
             android:title="@string/userpreferences_refreshAutomaticallyInBackground_title"
+            android:summary="When activated, IMMSO will check periodically your servers status using all available data connections. If disabled, most features will not work including : Notification, stats, etc."
             android:defaultValue="true" />
 
         <ListPreference
@@ -36,6 +37,7 @@
         <CheckBoxPreference
             android:key="@string/userpreferences_notifyWhenServerGoesOffline_key"
             android:title="@string/userpreferences_notifyWhenServerGoesOffline_title"
+            android:summary="When activated, notifications will be posted when one of your servers goes offline. Requires 'automatic refresh' to be enabled."
             android:defaultValue="true" />
 
     </PreferenceCategory>
