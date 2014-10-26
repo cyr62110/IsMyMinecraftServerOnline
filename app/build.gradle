@@ -14,7 +14,7 @@ apply plugin: 'android-apt'
 ext {
     androidAnnotationsVersion = '3.1'
     androidToolsVersion = '21.0.1'
-    supportLibraryVersion = '21.0.0'
+    supportLibraryVersion = '21.0.+'
 }
 
 dependencies {
@@ -26,11 +26,12 @@ dependencies {
     compile "com.j256.ormlite:ormlite-android:4.48"
 
     //RxAndroid to use reactive functional programming for network operations
-    compile "com.netflix.rxjava:rxjava-android:0.10.1"
+    compile "com.netflix.rxjava:rxjava-android:0.20.6"
 
-    //Support v13 to use big view notification
+    //Support v4 to use big view notification
     compile "com.android.support:support-v4:$supportLibraryVersion"
 
+    //Minecraft Tools library
     compile project(':minecraft1.7+SupportLibrary')
 }
 
@@ -43,7 +44,7 @@ apt {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion androidToolsVersion
+    buildToolsVersion '21.0.1'
 
     defaultConfig {
         applicationId "fr.cvlaminck.immso"
@@ -57,6 +58,14 @@ android {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        playstore_alpha {
+            debuggable false
+            jniDebugBuild false
+            renderscriptDebugBuild false
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlign true
         }
     }
 

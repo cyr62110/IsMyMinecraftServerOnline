@@ -53,11 +53,11 @@ import fr.cvlaminck.immso.utils.TimeFormatter;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
-import rx.android.concurrency.AndroidSchedulers;
-import rx.concurrency.Schedulers;
-import rx.util.functions.Action1;
-import rx.util.functions.Func1;
-import rx.util.functions.Func2;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 @EIntentService
 public class PingService
@@ -203,6 +203,9 @@ public class PingService
     }
 
     private void loadServersFromSqlLite() {
+        //TODO: Remove Here for Prod
+        Log.e(TAG, "DAO : " + ((minecraftServerDao == null) ? "null" : "DAO"));
+        Log.e(TAG, "Runtime DAO : " + ((runtimeMinecraftServerDao == null) ? "null" : "DAO"));
         servers.addAll(runtimeMinecraftServerDao.queryForAll());
     }
 
@@ -276,7 +279,7 @@ public class PingService
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.threadPoolForIO())
+                .subscribeOn(Schedulers.io())
                 .subscribe(observer);
     }
 
@@ -307,8 +310,8 @@ public class PingService
                         return 0; //TODO : Check comparator doc and implements here to have in most recent to older offline server
                     }
                 })
-                .observeOn(Schedulers.currentThread())
-                .subscribeOn(Schedulers.currentThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<MinecraftServerEntity>>() {
                     @Override
                     public void call(List<MinecraftServerEntity> serversRequiringNotification) {

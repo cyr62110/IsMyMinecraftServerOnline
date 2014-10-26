@@ -1,6 +1,9 @@
 #Android
 *.apk
 
+#Java
+*.jar
+
 #Gradle
 .gradle
 /gradle.properties
