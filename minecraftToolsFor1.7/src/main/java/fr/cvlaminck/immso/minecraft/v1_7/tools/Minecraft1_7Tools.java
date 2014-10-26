@@ -15,6 +15,8 @@
  */
 package fr.cvlaminck.immso.minecraft.v1_7.tools;
 
+import java.util.Calendar;
+
 import fr.cvlaminck.immso.minecraft.MinecraftToolsVersion;
 import fr.cvlaminck.immso.minecraft.SupportedToolsVersions;
 import fr.cvlaminck.immso.minecraft.tools.MinecraftTools;
@@ -25,8 +27,6 @@ import fr.cvlaminck.immso.minecraft.tools.ping.PingSender;
  */
 public class Minecraft1_7Tools
         extends MinecraftTools {
-    private static final MinecraftToolsVersion VERSION = new MinecraftToolsVersion("1.7.x - 1.8.x", "1.7+");
-
     private fr.cvlaminck.immso.minecraft.v1_7.tools.ping.PingSender pingSender = null;
 
     static {
@@ -34,7 +34,13 @@ public class Minecraft1_7Tools
     }
 
     protected Minecraft1_7Tools() {
-        super(VERSION);
+        super(getVersion());
+    }
+
+    private static MinecraftToolsVersion getVersion() {
+        final Calendar releaseDate = Calendar.getInstance();
+        releaseDate.set(2013, 10, 25);
+        return new MinecraftToolsVersion("1.7.x", "1.7+", "The Update that Changed the World", releaseDate.getTime().getTime());
     }
 
     @Override

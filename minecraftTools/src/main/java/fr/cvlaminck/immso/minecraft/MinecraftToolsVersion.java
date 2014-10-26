@@ -34,6 +34,11 @@ public class MinecraftToolsVersion
     private String toolsVersion;
 
     /**
+     * Punchline used to describe this release of Minecraft
+     */
+    private String punchLine;
+
+    /**
      * When the first minecraft version supported by this version of the tools
      * has been released to the public.
      */
@@ -43,19 +48,16 @@ public class MinecraftToolsVersion
         this.toolsVersion = toolsVersion;
     }
 
-    /**
-     * TODO
-     *
-     * @deprecated
-     */
-    public MinecraftToolsVersion(String supportedMinecraftVersions, String toolsVersion) {
-        this.supportedMinecraftVersions = supportedMinecraftVersions;
-        this.toolsVersion = toolsVersion;
-    }
-
     public MinecraftToolsVersion(String supportedMinecraftVersions, String toolsVersion, long minecraftReleaseDate) {
         this.supportedMinecraftVersions = supportedMinecraftVersions;
         this.toolsVersion = toolsVersion;
+        this.minecraftReleaseDate = minecraftReleaseDate;
+    }
+
+    public MinecraftToolsVersion(String supportedMinecraftVersions, String toolsVersion, String punchLine, long minecraftReleaseDate) {
+        this.supportedMinecraftVersions = supportedMinecraftVersions;
+        this.toolsVersion = toolsVersion;
+        this.punchLine = punchLine;
         this.minecraftReleaseDate = minecraftReleaseDate;
     }
 
@@ -73,6 +75,14 @@ public class MinecraftToolsVersion
 
     public void setToolsVersion(String toolsVersion) {
         this.toolsVersion = toolsVersion;
+    }
+
+    public String getPunchLine() {
+        return punchLine;
+    }
+
+    public void setPunchLine(String punchLine) {
+        this.punchLine = punchLine;
     }
 
     public long getMinecraftReleaseDate() {

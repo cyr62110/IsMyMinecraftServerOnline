@@ -22,8 +22,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import fr.cvlaminck.immso.R;
 import fr.cvlaminck.immso.minecraft.MinecraftToolsVersion;
 import fr.cvlaminck.immso.minecraft.SupportedToolsVersions;
+import fr.cvlaminck.immso.views.version.ToolsVersionDropDownView;
+import fr.cvlaminck.immso.views.version.ToolsVersionDropDownView_;
 
 public class ToolsVersionAdapter
         extends ArrayAdapter<MinecraftToolsVersion> {
@@ -39,7 +42,7 @@ public class ToolsVersionAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup rootView) {
         if (convertView == null) {
-            convertView = layoutInflater.inflate(android.R.layout.simple_spinner_item, null);
+            convertView = layoutInflater.inflate(R.layout.toolsversionadapter_view, null);
         }
         final MinecraftToolsVersion toolsVersion = getItem(position);
         final TextView text1 = (TextView) convertView.findViewById(android.R.id.text1);
@@ -52,13 +55,13 @@ public class ToolsVersionAdapter
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = layoutInflater.inflate(android.R.layout.simple_spinner_item, null);
+            convertView = ToolsVersionDropDownView_.build(getContext());
         }
+        ToolsVersionDropDownView dropDownView = (ToolsVersionDropDownView) convertView;
+
         final MinecraftToolsVersion toolsVersion = getItem(position);
-        final TextView text1 = (TextView) convertView.findViewById(android.R.id.text1);
+        dropDownView.setToolsVersion(toolsVersion);
 
-        text1.setText(toolsVersion.getSupportedMinecraftVersions());
-
-        return convertView;
+        return dropDownView;
     }
 }

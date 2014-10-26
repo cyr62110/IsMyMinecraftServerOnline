@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/paddingMedium">
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:textSize="@dimen/textXLarge"
+        android:text="1.7"/>
+
+    <LinearLayout
+        android:id="@+id/llSpace"
+        android:layout_width="8dp"
+        android:layout_height="22dp"
+        android:layout_toRightOf="@id/txtVersion"
+        android:layout_alignBottom="@id/txtVersion"
+        android:layout_marginLeft="@dimen/paddingSmall"
+        android:layout_marginRight="@dimen/paddingSmall"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="8dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:background="@color/lightGray"
+            />
+    </LinearLayout>
+
+    
+    <TextView
+        android:id="@+id/txtPunchLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/llSpace"
+        android:layout_alignBaseline="@id/txtVersion"
+        android:textSize="@dimen/textSmall"
+        android:textColor="@color/lightGray"
+        android:text="The Update that Changed the World"
+        />
+
+</RelativeLayout>

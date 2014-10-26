@@ -203,9 +203,6 @@ public class PingService
     }
 
     private void loadServersFromSqlLite() {
-        //TODO: Remove Here for Prod
-        Log.e(TAG, "DAO : " + ((minecraftServerDao == null) ? "null" : "DAO"));
-        Log.e(TAG, "Runtime DAO : " + ((runtimeMinecraftServerDao == null) ? "null" : "DAO"));
         servers.addAll(runtimeMinecraftServerDao.queryForAll());
     }
 

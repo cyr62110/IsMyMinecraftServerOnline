@@ -1,1 +1,1 @@
-include ':app', ':minecraft1.7+SupportLibrary', ':baseMinecraftVersionSupportLibrary'
+include ':app', ':minecraftTools', ':minecraftToolsFor1.7', ':minecraftToolsFor1.8'

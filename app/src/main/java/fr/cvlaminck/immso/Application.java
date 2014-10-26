@@ -27,6 +27,7 @@ public class Application
         //We need to ensure that all tools versions are loaded and added to the register.
         try {
             Class.forName("fr.cvlaminck.immso.minecraft.v1_7.tools.Minecraft1_7Tools");
+            Class.forName("fr.cvlaminck.immso.minecraft.v1_8.tools.Minecraft1_8Tools");
         } catch (ClassNotFoundException e) {
         }
     }

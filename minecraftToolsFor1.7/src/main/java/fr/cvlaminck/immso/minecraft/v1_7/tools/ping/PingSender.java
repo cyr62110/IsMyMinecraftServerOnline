@@ -43,7 +43,7 @@ public class PingSender extends fr.cvlaminck.immso.minecraft.tools.ping.PingSend
         final HandshakePacket handshake = new HandshakePacket();
         handshake.setServerAddress(mcServer.getHost());
         handshake.setPort(mcServer.getPort());
-        handshake.setProtocolVersion(5); //TODO
+        handshake.setProtocolVersion(0); //Minecraft does not seems to care to much about this value.
         handshake.setNextState(HandshakePacket.State.STATUS);
         out.writePacket(handshake);
         //Then, we send our status request
