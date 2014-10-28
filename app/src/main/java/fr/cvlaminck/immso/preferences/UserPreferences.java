@@ -47,4 +47,7 @@ public interface UserPreferences {
     @DefaultBoolean(value = true, keyRes = R.string.userpreferences_notifyWhenServerGoesOffline_key)
     boolean notifyWhenServerGoesOffline();
 
+    @DefaultBoolean(value = true, keyRes = R.string.userpreferences_pushNotificationsToWearableDevices_key)
+    boolean pushNotificationsToWearableDevices();
+
 }

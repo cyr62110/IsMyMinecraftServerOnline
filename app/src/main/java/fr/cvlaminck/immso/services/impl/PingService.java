@@ -337,6 +337,10 @@ public class PingService
             buildNotificationForOneOfflineServer(builder, offlineServers.get(0));
         else
             buildNotificationForMultipleOfflineServers(builder, offlineServers);
+
+        //If notifications on wearable devices is desactivated, we had the LOCAL_ONLY flag.
+        builder.setLocalOnly(!userPreferences.pushNotificationsToWearableDevices().get());
+
         return builder.build();
     }
 

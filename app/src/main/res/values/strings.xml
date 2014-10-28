@@ -42,6 +42,9 @@
     <string name="userpreferences_refreshAutomaticallyInBackground_title">Automatic refresh</string>
     <string name="userpreferences_notifyWhenServerGoesOffline_key">notify</string>
     <string name="userpreferences_notifyWhenServerGoesOffline_title">Notify when a server goes offline</string>
+    <string name="userpreferences_pushNotificationsToWearableDevices_key">wearable</string>
+    <string name="userpreferences_pushNotificationsToWearableDevices_title">Notify on wearable devices</string>
+    <string name="userspreferences_pushNotificationsToWearableDevices_summary">When activated, notifications will be pushed to your wearable devices.</string>
 
     <string name="timeformatter_seconds">seconds</string>
     <string name="timeformatter_minutes">minutes</string>
