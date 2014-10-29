@@ -29,7 +29,7 @@ import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
 public class DatabaseHelper
         extends OrmLiteSqliteOpenHelper {
     private final static String DATABASE_NAME = "servers.db";
-    private final static int DATABASE_VERSION = 1;
+    private final static int DATABASE_VERSION = 2;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,6 +45,7 @@ public class DatabaseHelper
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-
+        //TODO
+        //V2 : added hasOfflineStatusBeenSeen field in MinecraftServerEntity
     }
 }

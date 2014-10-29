@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.cvlaminck.immso.R;
+import fr.cvlaminck.immso.activities.HomeActivity_;
 import fr.cvlaminck.immso.data.DatabaseHelper;
 import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
 import fr.cvlaminck.immso.data.repositories.MinecraftServerDao;
@@ -63,7 +64,13 @@ import rx.schedulers.Schedulers;
 public class PingService
         extends IntentService {
     private final static String TAG = PingService.class.getSimpleName();
-    private final boolean DEBUG = false;
+    private final boolean DEBUG = true;
+
+    /**
+     * Refresh period that will be forced if the application is running in DEBUG mode
+     * Set to 0 if you want to have the default behavior.
+     */
+    private final long DEBUG_FIXED_PERIOD = 30000;
 
     private final static int AUTOMATIC_REFRESH_REQUEST_CODE = 42;
 
@@ -163,6 +170,38 @@ public class PingService
         checkServers();
     }
 
+    @ServiceAction
+    protected void onNotificationDismissed(final ArrayList<Integer> serversRequiringNotification) {
+        //Offline servers that have seen their notification removed should not
+        //appear in the notifications next time the app check all server status since
+        //the user already know they are offline.
+        Observable.from(servers)
+                .filter(new Func1<MinecraftServerEntity, Boolean>() {
+                    @Override
+                    public Boolean call(MinecraftServerEntity server) {
+                        return serversRequiringNotification.contains(server.getId());
+                    }
+                })
+                .map(new Func1<MinecraftServerEntity, MinecraftServerEntity>() {
+                    @Override
+                    public MinecraftServerEntity call(MinecraftServerEntity server) {
+                        server.setHasOfflineStatusBeenSeen(true);
+                        return server;
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<MinecraftServerEntity>() {
+                    @Override
+                    public void call(MinecraftServerEntity server) {
+                        if (DEBUG)
+                            Log.d(TAG, String.format("'%s' offline status has been seen by the user. Updating the database", server.getName()));
+                        //We update the value in the database
+                        runtimeMinecraftServerDao.update(server);
+                    }
+                });
+    }
+
     private PendingIntent automaticRefreshPendingIntent(int flags) {
         final Intent intent = new Intent(this, RefreshReceiver_.class);
         return PendingIntent.getBroadcast(this, AUTOMATIC_REFRESH_REQUEST_CODE, intent, flags);
@@ -178,7 +217,12 @@ public class PingService
         if (userPreferences.refreshAutomaticallyInBackground().get()) {
             if (intent == null || force) {
                 intent = automaticRefreshPendingIntent(0);
-                final long period = userPreferences.timeInMSBetweenChecks().get();
+                final long period;
+                //In DEBUG mode, the period is fixed to 30 second
+                if (DEBUG && DEBUG_FIXED_PERIOD > 0)
+                    period = DEBUG_FIXED_PERIOD;
+                else
+                    period = userPreferences.timeInMSBetweenChecks().get();
                 if (DEBUG)
                     Log.d(TAG, "Configuring AlarmManager to automatically trigger refresh operation. Period in seconds : " + (period / 1000L));
                 alarmManager.setInexactRepeating(
@@ -195,7 +239,7 @@ public class PingService
     }
 
     private void clearAutomaticRefresh() {
-        if(DEBUG)
+        if (DEBUG)
             Log.d(TAG, "Clearing AlarmManager. Refresh operation will no more be triggered automatically");
         final PendingIntent intent = automaticRefreshPendingIntent(PendingIntent.FLAG_NO_CREATE);
         if (intent != null)
@@ -226,11 +270,9 @@ public class PingService
         //Otherwise, we use RxJava to update the status of all servers
         //First, we need to acquire a wake-lock so we are sure that the device does not goes off
         //when we are pinging all servers
-        //TODO : acquire wake-lock when bind to broadcast receiver only ?
         if (DEBUG)
             Log.d(TAG, "Acquiring wake-lock for network operations");
         wakeLock.acquire();
-
 
         //We copy the list of server so we are sure that it will not be modified during
         //the update.
@@ -261,9 +303,13 @@ public class PingService
                 .map(new Func1<MinecraftServerEntity, MinecraftServerEntity>() {
                     @Override
                     public MinecraftServerEntity call(MinecraftServerEntity server) {
-                        //If the server has gone offline, we update the offline since.
-                        if (server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE && server.getOfflineSince() == 0)
+                        //If a server has gone offline
+                        if (server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE && server.getOfflineSince() == 0) {
+                            //If the server has gone offline, we update the offline since.
                             server.setOfflineSince(server.getLastUpdateTime());
+                            //We set the boolean to true if the application is running since status are update in real-time on the UI.
+                            server.setHasOfflineStatusBeenSeen(bindCount > 0);
+                        }
                         return server;
                     }
                 })
@@ -287,81 +333,122 @@ public class PingService
     private void notifyWhenServerIsOffline() {
         //We check if the user has enabled the notification
         if (!userPreferences.notifyWhenServerGoesOffline().get()) {
-            if(DEBUG)
+            if (DEBUG)
                 Log.d(TAG, "Notifications when a server goes offline are not enabled. Skipping");
             return;
         }
-        //TODO
-        //We do not want to display a notification if the user is already browsing the interface
-        //of our application
-        Observable.from(servers)
+
+        //After we have updated all servers
+        final Observable<MinecraftServerEntity> offlineServersObservable = Observable.from(servers)
                 .filter(new Func1<MinecraftServerEntity, Boolean>() {
                     @Override
                     public Boolean call(MinecraftServerEntity server) {
                         return server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE;
                     }
-                })
-                .toSortedList(new Func2<MinecraftServerEntity, MinecraftServerEntity, Integer>() {
+                });
+
+        //We create a notification only for servers that the user does not know they are offline.
+        final Observable<List<MinecraftServerEntity>> serversRequiringNotification = offlineServersObservable.asObservable()
+                .filter(new Func1<MinecraftServerEntity, Boolean>() {
                     @Override
-                    public Integer call(MinecraftServerEntity s1, MinecraftServerEntity s2) {
-                        return 0; //TODO : Check comparator doc and implements here to have in most recent to older offline server
+                    public Boolean call(MinecraftServerEntity minecraftServerEntity) {
+                        return !minecraftServerEntity.hasOfflineStatusBeenSeen();
+                    }
+                })
+                .toList();
+
+        //TODO : zip the two observable to have both the list and the number of offline servers.
+        Observable.zip(offlineServersObservable.count(), serversRequiringNotification, new Func2<Integer, List<MinecraftServerEntity>, Object[]>() {
+                    @Override
+                    public Object[] call(Integer numberOfOfflineServers, List<MinecraftServerEntity> serversRequiringNotification) {
+                        return new Object[]{numberOfOfflineServers, serversRequiringNotification};
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<MinecraftServerEntity>>() {
+                .subscribe(new Action1<Object[]>() {
                     @Override
-                    public void call(List<MinecraftServerEntity> serversRequiringNotification) {
-                        if(DEBUG)
-                            Log.d(TAG, "Bind count before notification : " + bindCount);
+                    public void call(Object[] objects) {
+                        final Integer numberOfOfflineServers = (Integer) objects[0];
+                        final List<MinecraftServerEntity> serversRequiringNotification = (List<MinecraftServerEntity>) objects[1];
+
+                        if (DEBUG) {
+                            final StringBuilder sServersRequiringNotification = new StringBuilder();
+                            for (MinecraftServerEntity e : serversRequiringNotification) {
+                                if (sServersRequiringNotification.length() == 0)
+                                    sServersRequiringNotification.append("'" + e.getName() + "'");
+                                else
+                                    sServersRequiringNotification.append(", '" + e.getName() + "'");
+                            }
+                            if (sServersRequiringNotification.length() == 0)
+                                sServersRequiringNotification.append("(none)");
+                            Log.d(TAG, "Number of offline servers : " + numberOfOfflineServers + ". Offline server(s) requiring a notification : " + sServersRequiringNotification.toString());
+                        }
                         //If the service is bound to an activity, we do not notify the user
-                        if(bindCount > 0) {
-                            if(DEBUG)
+                        if (bindCount > 0) {
+                            if (DEBUG)
                                 Log.d(TAG, "Activity is displayed to end-user. Notification muted.");
-                            if(serversRequiringNotification.size() == 0)
-                                notificationManager.cancel(OFFLINE_SERVER_NOTIFICATION_ID);
+                            notificationManager.cancel(OFFLINE_SERVER_NOTIFICATION_ID);
                         } else {
                             if (serversRequiringNotification.size() > 0) {
-                                final Notification notification = buildNotificationForOfflineServers(serversRequiringNotification);
+                                final Notification notification = buildNotificationForOfflineServers(numberOfOfflineServers, serversRequiringNotification);
                                 notificationManager.notify(OFFLINE_SERVER_NOTIFICATION_ID, notification);
                             } else
                                 notificationManager.cancel(OFFLINE_SERVER_NOTIFICATION_ID);
                         }
                     }
                 });
+
     }
 
-    private Notification buildNotificationForOfflineServers(List<MinecraftServerEntity> offlineServers) {
+    private Notification buildNotificationForOfflineServers(int numberOfOfflineServers, List<MinecraftServerEntity> serversRequiringNotification) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        if (offlineServers.size() == 1)
-            buildNotificationForOneOfflineServer(builder, offlineServers.get(0));
+        if (serversRequiringNotification.size() == 1)
+            buildNotificationForOneOfflineServer(builder, numberOfOfflineServers, serversRequiringNotification.get(0));
         else
-            buildNotificationForMultipleOfflineServers(builder, offlineServers);
+            buildNotificationForMultipleOfflineServers(builder, numberOfOfflineServers, serversRequiringNotification);
 
-        //If notifications on wearable devices is desactivated, we had the LOCAL_ONLY flag.
+        //If notifications on wearable devices is deactivated, we had the LOCAL_ONLY flag.
         builder.setLocalOnly(!userPreferences.pushNotificationsToWearableDevices().get());
 
+        //We want the HomeActivity to be displayed when the user click on the notification.
+        final PendingIntent startHomeActivityPendingIntent = PendingIntent.getActivity(this, 0, HomeActivity_.intent(this).get(), 0);
+        builder.setContentIntent(startHomeActivityPendingIntent);
+        //Also the notification is canceled when the user open the application using the notification
+        builder.setAutoCancel(true);
+
+        //When the notification is canceled, we want to update the hasOfflineBeenSeen of servers in the notification
+        final ArrayList<Integer> serverIds = new ArrayList<>();
+        for (MinecraftServerEntity e : serversRequiringNotification)
+            serverIds.add(e.getId());
+        final Intent onNotificationDismissedIntent = PingService_.intent(this).onNotificationDismissed(serverIds).get();
+        final PendingIntent onNotificationDismissedPendingIntent = PendingIntent.getService(this, 0, onNotificationDismissedIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setDeleteIntent(onNotificationDismissedPendingIntent);
+
+        //Since we are refreshing the notification, we only want the sound/vibrate to be played the first time.
+        builder.setOnlyAlertOnce(true);
         return builder.build();
     }
 
-    private void buildNotificationForOneOfflineServer(NotificationCompat.Builder builder, MinecraftServerEntity offlineServer) {
+    private void buildNotificationForOneOfflineServer(NotificationCompat.Builder builder, int numberOfOfflineServers, MinecraftServerEntity offlineServer) {
         final long offlineTime = offlineServer.getLastUpdateTime() - offlineServer.getOfflineSince();
         builder
                 .setSmallIcon(R.drawable.notification_icon)
+                .setTicker(getString(R.string.offlineServerNotification_oneServer_ticker, offlineServer.getName()))
                 .setContentTitle(offlineServer.getName())
                 .setContentText(getString(R.string.offlineServerNotification_oneServer_contentText, timeFormatter.format(offlineTime)));
         //TODO : add the favicon of the server if available. for 1.7+ servers only
     }
 
-    private void buildNotificationForMultipleOfflineServers(NotificationCompat.Builder builder, List<MinecraftServerEntity> offlineServers) {
+    private void buildNotificationForMultipleOfflineServers(NotificationCompat.Builder builder, int numberOfOfflineServers, List<MinecraftServerEntity> offlineServers) {
         final MinecraftServerEntity offlineServer = offlineServers.get(0);
         final long offlineTime = offlineServer.getLastUpdateTime() - offlineServer.getOfflineSince();
         builder
                 .setSmallIcon(R.drawable.notification_icon)
+                .setTicker(getString(R.string.offlineServerNotification_multipleServers_ticker, offlineServers.size()))
                 .setContentTitle(getString(R.string.offlineServerNotification_multipleServers_contentTitle, offlineServers.size()))
                 .setContentText(getString(R.string.offlineServerNotification_multipleServers_contentText, offlineServer.getName(),
                         offlineServers.size() - 1, timeFormatter.format(offlineTime)));
-        //TODO : add a icon
     }
 
     /*package*/ List<MinecraftServerEntity> getServers() {
@@ -416,6 +503,8 @@ public class PingService
         @Override
         public void onCompleted() {
             subscription = null;
+            //We notify the user about server status
+            notifyWhenServerIsOffline();
             //We release the wake-lock
             if (DEBUG)
                 Log.d(TAG, "Releasing wake-lock");
@@ -428,16 +517,13 @@ public class PingService
 
         @Override
         public void onError(Throwable e) {
-            //TODO
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         @Override
         public void onNext(MinecraftServerEntity server) {
             if (DEBUG)
                 Log.d(TAG, String.format("Server status refreshed : %s:%d -> %s", server.getHost(), server.getPort(), server.getDetailedStatus().name()));
-            //We notify the user about server status
-            notifyWhenServerIsOffline();
         }
     };
 

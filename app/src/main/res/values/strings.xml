@@ -65,6 +65,8 @@
     <string name="serverviewheaderview_status_online">Online</string>
     <string name="serverlistheaderview_status_offline">Offline</string>
     <string name="serverlistitemview_lblOfflineSince">Offline since</string>
+    <string name="offlineServerNotification_oneServer_ticker">\'%s\' has gone offline</string>
+    <string name="offlineServerNotification_multipleServers_ticker">%d servers have gone offline</string>
 
 
 </resources>
