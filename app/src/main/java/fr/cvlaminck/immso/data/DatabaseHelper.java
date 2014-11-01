@@ -25,6 +25,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
+import fr.cvlaminck.immso.data.updaters.V1ToV2DatabaseUpdater;
 
 public class DatabaseHelper
         extends OrmLiteSqliteOpenHelper {
@@ -45,7 +46,10 @@ public class DatabaseHelper
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        //TODO
-        //V2 : added hasOfflineStatusBeenSeen field in MinecraftServerEntity
+        if(oldVersion == 1) {
+            //V2 : added hasOfflineStatusBeenSeen field in MinecraftServerEntity
+            final V1ToV2DatabaseUpdater databaseUpdater = new V1ToV2DatabaseUpdater();
+            databaseUpdater.update(database, connectionSource);
+        }
     }
 }
