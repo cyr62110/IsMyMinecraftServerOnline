@@ -40,6 +40,12 @@
             android:summary="When activated, notifications will be posted when one of your servers goes offline. Requires 'automatic refresh' to be enabled."
             android:defaultValue="true" />
 
+        <CheckBoxPreference
+            android:key="@string/userpreferences_pushNotificationsToWearableDevices_key"
+            android:title="@string/userpreferences_pushNotificationsToWearableDevices_title"
+            android:summary="@string/userspreferences_pushNotificationsToWearableDevices_summary"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

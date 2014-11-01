@@ -71,6 +71,14 @@ public class MinecraftServerEntity
     @DatabaseField
     private long offlineSince = 0;
 
+    /**
+     * Have the user removed the notification about this server.
+     * This value is also set to true automatically if the application is running when
+     * the server goes offline.
+     */
+    @DatabaseField
+    private boolean hasOfflineStatusBeenSeen = false;
+
     @DatabaseField
     private long lastUpdateTime = 0;
 
@@ -213,6 +221,14 @@ public class MinecraftServerEntity
         if (detailedStatus != MinecraftServer.DetailedStatus.OFFLINE)
             return;
         this.offlineSince = offlineSince;
+    }
+
+    public boolean hasOfflineStatusBeenSeen() {
+        return hasOfflineStatusBeenSeen;
+    }
+
+    public void setHasOfflineStatusBeenSeen(boolean hasOfflineStatusBeenSeen) {
+        this.hasOfflineStatusBeenSeen = hasOfflineStatusBeenSeen;
     }
 
     public long getLastUpdateTime() {
