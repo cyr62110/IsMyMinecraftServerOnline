@@ -95,7 +95,7 @@ public class ServerListItemView
         if (server.getDetailedStatus() != MinecraftServer.DetailedStatus.UNKNOWN) {
             setVersion(server.getVersion());
             //If the server is online, we update the view displaying the number of players.
-            if (server.getDetailedStatus() == MinecraftServer.DetailedStatus.ONLINE)
+            if (server.getStatus() == MinecraftServer.Status.ONLINE)
                 setNumberOfPlayer(server.getNumberOfPlayer(), server.getMaxNumberOfPlayer());
             //If the server is offline, we display the offline since
             if (server.getDetailedStatus() == MinecraftServer.DetailedStatus.OFFLINE)
