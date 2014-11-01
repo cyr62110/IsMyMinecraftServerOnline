@@ -15,12 +15,16 @@
  */
 package fr.cvlaminck.immso.activities;
 
+import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.transition.Transition;
 import android.view.View;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
@@ -89,6 +93,7 @@ public class HomeActivity
     }
 
     @OptionsItem(R.id.miAdd)
+    @Click(R.id.btnAddServerToList)
     protected void addServerToList() {
         AddServerActivity_.intent(this).start();
     }

@@ -37,6 +37,19 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true" />
 
+        <ImageButton
+            android:id="@+id/btnAddServerToList"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:elevation="5dp"
+            android:src="@drawable/btn_add_server"
+            android:background="@drawable/btn_add_server_background"
+            />
+
     </RelativeLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

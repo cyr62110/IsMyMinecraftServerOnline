@@ -64,7 +64,7 @@ import rx.schedulers.Schedulers;
 public class PingService
         extends IntentService {
     private final static String TAG = PingService.class.getSimpleName();
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
 
     /**
      * Refresh period that will be forced if the application is running in DEBUG mode

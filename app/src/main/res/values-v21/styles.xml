@@ -17,35 +17,20 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Immso" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="Immso" parent="android:Theme.Material.Light.DarkActionBar">
         <item name="onlineStatusColor">@color/green</item>
         <item name="fullStatusColor">@color/orange</item>
         <item name="offlineStatusColor">@color/red</item>
 
         <item name="android:actionBarStyle">@style/Immso.ActionBar</item>
+        <item name="android:statusBarColor">@color/statusBarColor</item>
     </style>
 
     <!-- ActionBar styles -->
-    <style name="Immso.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <style name="Immso.ActionBar" parent="android:Widget.Material.ActionBar">
         <item name="android:background">@color/applicationBaseColor</item>
     </style>
 
-    <style name="Immso.Text" parent="android:TextAppearance.Holo"></style>
-
-    <style name="Immso.Text.ServerName" parent="Immso.Text">
-        <item name="android:textSize">@dimen/textLarge</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-
-    <style name="Immso.Text.ServerVersion" parent="Immso.Text">
-        <item name="android:textSize">@dimen/textMicro</item>
-        <item name="android:textStyle">italic</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-
-    <style name="Immso.Text.ServerAddress" parent="Immso.Text">
-        <item name="android:textSize">@dimen/textSmall</item>
-        <item name="android:textColor">?android:textColorTertiary</item>
-    </style>
+    <style name="Immso.Text" parent="android:TextAppearance.Material"></style>
 
 </resources>

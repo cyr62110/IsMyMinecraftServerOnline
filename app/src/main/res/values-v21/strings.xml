@@ -15,20 +15,7 @@
 -->
 
 <resources>
-    <color name="applicationBaseColor">@color/green</color>
-    <color name="statusBarColor">@color/darkGreen</color>
 
-    <color name="lightGray">#808080</color>
-
-    <color name="green">#407A30</color>
-    <color name="darkGreen">#376028</color>
-
-    <color name="red">#773B30</color>
-    
-    <color name="orange">#776718</color>
-
-    <color name="buttonBackgroundColorEnable">@color/green</color>
-    <color name="buttonBackgroundColorDisabled">@color/lightGray</color>
-    <color name="buttonBackgroundColorClicked">@color/darkGreen</color>
+    <string name="serverlistemptyview_lblEmpty">You are not observing any Minecraft server.\r\nPress on the button at the bottom of your screen to start observing your first one.</string>
 
 </resources>
