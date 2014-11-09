@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spacingMicro">3dp</dimen>
+    <dimen name="spacingSmall">5dp</dimen>
+    <dimen name="spacingMedium">7dp</dimen>
+    <dimen name="spacingLarge">10dp</dimen>
+    <dimen name="spacingXLarge">14dp</dimen>
+    <dimen name="spacingXXLarge">20dp</dimen>
+
+    <dimen name="paddingMicro">@dimen/spacingMicro</dimen>
+    <dimen name="paddingSmall">@dimen/spacingSmall</dimen>
+    <dimen name="paddingMedium">@dimen/spacingMedium</dimen>
+    <dimen name="paddingLarge">@dimen/spacingLarge</dimen>
+
+    <dimen name="textMicro">12sp</dimen>
+    <dimen name="textSmall">14sp</dimen>
+    <dimen name="textMedium">18sp</dimen>
+    <dimen name="textLarge">22sp</dimen>
+    <dimen name="textXLarge">26sp</dimen>
+    <dimen name="textXXLarge">30sp</dimen>
+</resources>

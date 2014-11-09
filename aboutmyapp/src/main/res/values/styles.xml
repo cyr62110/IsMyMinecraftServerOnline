@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AboutMyApp" />
+
+    <style name="AboutMyApp.TextAppearance" />
+
+    <style name="AboutMyApp.TextAppearance.Dialog" />
+
+    <style name="AboutMyApp.TextAppearance.Dialog.ApplicationName">
+        <item name="android:textSize">@dimen/textLarge</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AboutMyApp.TextAppearance.Dialog.OrganisationOrMainDevelopers">
+        <item name="android:textSize">@dimen/textMedium</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="AboutMyApp.TextAppearance.Dialog.Version">
+        <item name="android:textSize">@dimen/textSmall</item>
+        <item name="android:textColor">?android:textColorTertiary</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="AboutMyApp.TextAppearance.Dialog.Licences">
+        <item name="android:textSize">@dimen/textSmall</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+</resources>

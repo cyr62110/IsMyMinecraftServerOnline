@@ -1,1 +1,1 @@
-include ':app', ':minecraftTools', ':minecraftToolsFor1.7', ':minecraftToolsFor1.8'
+include ':app', ':minecraftTools', ':minecraftToolsFor1.7', ':minecraftToolsFor1.8', ':aboutmyapp', ':aboutmyapp-config'

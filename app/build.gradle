@@ -31,6 +31,9 @@ dependencies {
     //Support v4 to use big view notification
     compile "com.android.support:support-v4:$supportLibraryVersion"
 
+    //AboutMyApp library
+    compile project(':aboutmyapp')
+
     //Minecraft Tools libraries
     compile project(':minecraftToolsFor1.7')
     compile project(':minecraftToolsFor1.8')

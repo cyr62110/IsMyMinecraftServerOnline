@@ -1,0 +1,10 @@
+[
+    {
+        "id" : "apacheV2",
+        "name" : "Apache License, Version 2.0",
+        "location" : "raw://" or "asset://"
+    },
+    {
+        "id" : "gplV3",
+    }
+]

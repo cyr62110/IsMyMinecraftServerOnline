@@ -1,0 +1,9 @@
+{
+    "name" : "",
+    "version" : "",
+    "description" : "",
+    "licences" : [{ "id" : "" } or { "" }]
+    "developers" : [ { "name" : "", "email" : "", "url" : "" } ],
+    "contributors" : [ { "name" : "", "email" : "", "url" : "" } ],
+    "maven" : { "groupId" : "", "artifactId" : "", "version" : "" }
+}

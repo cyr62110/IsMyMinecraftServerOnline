@@ -33,6 +33,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import fr.cvlaminck.aboutmyapp.dialogs.AboutMyAppDialogFragment;
 import fr.cvlaminck.immso.R;
 import fr.cvlaminck.immso.adapters.ServerAdapter;
 import fr.cvlaminck.immso.data.entities.MinecraftServerEntity;
@@ -102,6 +103,12 @@ public class HomeActivity
     protected void miRefresh() {
         srlRefresh.setRefreshing(true);
         refreshServerStatus();
+    }
+
+    @OptionsItem(R.id.miAbout)
+    protected void miAbout() {
+        final AboutMyAppDialogFragment dialogFragment = AboutMyAppDialogFragment.newInstance(this);
+        dialogFragment.show(getFragmentManager(), "about");
     }
 
     @OptionsItem(R.id.miPreferences)

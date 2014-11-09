@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="25dp">
+
+    <ImageView
+        android:id="@+id/imgApplicationIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@android:drawable/btn_dialog" />
+
+    <TextView
+        android:id="@+id/txtApplicationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/spacingLarge"
+        android:text="Is my Minecraft Server"
+        android:textAppearance="@style/AboutMyApp.TextAppearance.Dialog.ApplicationName"
+        />
+
+    <TextView
+        android:id="@+id/txtOrganisationOrMainDevelopers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Cyril Vlaminck"
+        android:textAppearance="@style/AboutMyApp.TextAppearance.Dialog.OrganisationOrMainDevelopers"
+        />
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Version 1.0"
+        android:textAppearance="@style/AboutMyApp.TextAppearance.Dialog.Version"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacingMedium" />
+
+    <TextView
+        android:id="@+id/txtLicences"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Licenced under Apache v2.0"
+        android:textAppearance="@style/AboutMyApp.TextAppearance.Dialog.Licences"
+        />
+
+</LinearLayout>

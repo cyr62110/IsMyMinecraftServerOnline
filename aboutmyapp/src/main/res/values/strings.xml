@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AboutMyApp</string>
+
+    <string name="default_aboutmyappdialogfragment_title">About my app</string>
+</resources>
